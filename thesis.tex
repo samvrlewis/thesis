@@ -1,0 +1,35 @@
+\documentclass[titlesmallcaps,%
+               examinerscopy,%
+               copyrightpage]{uqthesis}
+
+\input{defs_thesis}
+\let\ifpdf\relax
+
+\begin{document}
+
+\frontmatter
+\setlength{\parskip}{10pt} % changes vertical space between paragraphs
+\input{frontstuff/frontstuff}
+
+\mainmatter
+
+\input{sections/intro}
+\input{sections/review}
+\input{sections/background}
+\input{sections/outline}
+\input{sections/method}
+
+\appendix
+
+\input{appendices/an_appendix}
+ 
+\backmatter
+
+\input{appendices/listofsymbols}
+
+\bibliographystyle{IEEEtran}
+
+\bibliography{references/library}
+
+
+\end{document}
