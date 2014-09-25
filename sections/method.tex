@@ -1,5 +1,11 @@
 \chapter{Methodology, procedure, design, etc.}
 
+This section outlines the methodology of the project. It is broken down into the following sections. 
+
+\begin{itemize}
+\item Data Curation - The large amounts of binary data that was
+\end{itemize}
+
 \section{Data curation}
 
 To build training and validation sets for behaviour classification, experiments were performed in which video was recorded of two cows with sensor nodes on both the ear and halter over a span of three days. The sensor nodes logged data from accelerometer, magnometer, gyroscope, pressure, temperature and audio sensors to SD card in the Tagged Data Format (TDF). 
@@ -20,7 +26,6 @@ To build training and validation sets for behaviour classification, experiments 
 The Tagged Data Format is not indexable so it was necessary to convert the data stored in this format to a format in which the data was easy to access and search through. For this purpose, the Hierarchical Data Format (HDF) was selected. HDF is a data format designed for use with large amounts of scientific data that is written once but read many times. (citation here) Additionally, mechanisms were already in place to allow for HDF files to be placed on a server and accessed remotely. 
 
 Each individual sensor node was allocated its own HDF file, and each HDF file had a standard format and hierarchy. The format and hierarchy of the sensor node HDF files is shown in image xx below. The basic structure is that there is one table per sensor, with each sensor being a physical chip on the board. Each table contained rows containing the UTC time the sensor reading was taken and the corresponding sensor readings. Because of the way in which the sampling from each sensor works in the sensor node, this allows sensor readings that share sample times to be written into the same row.  
-
 
 \subsubsection{Data conversion}
 To convert the TDF data to HDF data, a python command line utility was written that made use of the python library, PyTables which exposes the HDF5 library to python bindings. The python script was written to extract and then parse the binary, TDF data into memory before writing it all out to a specified HDF file. A full code listing of the completed command line utility, \texttt{sd2hdf} can be found in appendix blah. 
@@ -97,5 +102,22 @@ A user of the annotation interface is then able to select a node, a time period 
 - lots of code written to assist with this general extraction
 
 \section{Classifier design}
+
+\subsection{Selection of machine learning algorithm}
+
+Put a table here?
+
+SVM - easy to use, fast to converge, easy to use on embedded systems, something about how to avoids over fitting
+
+ANN - doesn't always converge, 
+
+%%paper with stuff about ML algos for emebedded systems %%http://nesl.ee.ucla.edu/courses/ee202a/shared/samples/projects/2008f/Adam_Stoelting.pdf%%
+
+choice of software package to use too?
+
+matlab - not free but easy to prototype
+python - os/workflow already in python/somewhat easy to prototype/good libraries avaliable
+C - what an algorithm would eventually implemented in on device, hard to prototype and quickly change things
+
 
 \section{Classifier evaluation}

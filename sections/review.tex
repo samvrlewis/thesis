@@ -28,7 +28,7 @@ Though these machine learning and statistical modelling techniques have proved s
 \leavevmode
 \includegraphics[width=0.6\textwidth]{images/clapham.png}
 \end{center}
-\caption{"Results from principal component analysis of frequency spectra comparing: (a) bites and chews from wideband and narrowband recordings and (b) the same data distinguished according to the two animals used in the analysis" \cite{Clapham2011}. }
+\caption[PCA of bite/chew frequency spectra]{"Results from principal component analysis of frequency spectra comparing: (a) bites and chews from wideband and narrowband recordings and (b) the same data distinguished according to the two animals used in the analysis" \cite{Clapham2011}. }
 \label{clapham}
 \end{figure}
 
@@ -45,3 +45,30 @@ Having a classification system that can run continually with very little on-goin
 In considering appropriate sensor data to use with such a classification device, both Nadimi et al. and Gerencser et al. recommend against the use of GPS data for a classifier of animal behaviour \cite{Nadimi2012} \cite{Gerencser2013}. GPS has high energy consumption and loss of signal is probable in areas where an animal may be under foliage. Accelerometer and gyroscope signals for classification are stated as being more robust than GPS since the trade off between relative and local data in an accelerometer and gyroscope and absolute and global data in GPS is not worth the added power cost and decrease in reliability \cite{Gerencser2013}.
 
 Additionally, gyroscope information adds little accuracy compared with accelerometer data \cite{Gerencser2013}. For machine learning applications it was found that standard deviation, minimum and maximum values were the most useful \cite{Gerencser2013}. 
+
+
+\section{Prior work on project}
+\label{sec:prior work}
+Currently, CSIRO have performed experiments where sensor nodes are deployed on the eartags of cattle. Sensor nodes are capable of collecting sensor data, processing and communicating with other sensor nodes over a network. A collection of sensor nodes communicating wirelessly form a Wireless Sensor Network (WSN). The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. A photo of the eartag is shown in figure \ref{eartag} and a photo of the eartag attached to a cow is shown in figure \ref{cow}.
+
+
+\begin{figure}[H]
+\centering
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=0.4\textwidth]{images/eartag.png}
+  \caption{Eartag}
+  \label{eartag}
+\end{minipage}%
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=.5\textwidth]{images/cow.jpg}
+  \caption{Cow wearing eartag}
+  \label{cow}
+\end{minipage}
+\end{figure}
+
+
+The WSN platform has been used for animal behaviour classification in the past as seen in section 2.1. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
+
+CSIRO have performed experiments in a variety of environmental conditions where time-stamped data from sensor nodes attached to cattle is recorded while the cattle behaviour is recorded with video. In this way, data from the eartag can be matched with particular behaviours of the cattle. A classification algorithm can then be designed using this data.
