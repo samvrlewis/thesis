@@ -2,17 +2,17 @@
 \documentclass[titlesmallcaps,%
                examinerscopy,%
                copyrightpage]{uqthesis}
-
+               
 \input{defs_thesis}
-\let\ifpdf\relax
-
 \begin{document}
 
 \frontmatter
-\setlength{\parskip}{10pt} % changes vertical space between paragraphs
+
 \input{frontstuff/frontstuff}
 
 \mainmatter
+\setlength{\parskip}{20pt} % changes vertical space between paragraphs
+\renewcommand{\baselinestretch}{1.50}\normalsize
 
 \input{sections/intro}
 \input{sections/background}
@@ -21,15 +21,10 @@
 \input{sections/method}
 
 \appendix
-
-
  
 \backmatter
 
-
-
 \bibliographystyle{IEEEtran}
-
 \bibliography{references/library}
 
 

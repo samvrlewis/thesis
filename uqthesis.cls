@@ -31,12 +31,12 @@
 
 % print a copyright page on the back of the title page?
 \newboolean{copyrightpage}
-\setboolean{copyrightpage}{false}
+\setboolean{copyrightpage}{true}
 \DeclareOption{copyrightpage}{\setboolean{copyrightpage}{false}}
 
 % print ``Examiner's copy'' on the title page?
 \newboolean{examinerscopy}
-\setboolean{examinerscopy}{false}
+\setboolean{examinerscopy}{true}
 \DeclareOption{examinerscopy}{\setboolean{examinerscopy}{false}}
 
 % use small caps for the title text?

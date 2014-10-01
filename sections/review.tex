@@ -21,12 +21,12 @@ In a paper by Milone et al. Hidden Markov Models (HMMs) were proposed as a metho
 
 An overall performance of 82\% was claimed in the study. It was found that models a with small amount of states worked better than more complicated models. However, modelling states between chewing states proved difficult. Ideally these states would be modelled as silence but background noise causes these states to not be strictly silent. It was postulated that the accuracy would be improved if information about the rate of background noise events could be modelled and included in the classifier. 
 
-Though these machine learning and statistical modelling techniques have proved successful, there has been some research into a time domain approach to quantify the ingestive behaviour of free-grazing cattle \cite{Clapham2011}. Using wide-frequency acoustic microphones that were positioned close to the mouth of cows, signal analysis was performed on the incoming sounds to detect and then measure ingestive events. Recordings were made at 44.1kHz at a 16 bit resolution and then filtered to reduce low frequency noise. 
+Though these machine learning and statistical modelling techniques have proved successful, there has been some research into a time domain approach to quantify the ingestive behaviour of free-grazing cattle \cite{Clapham2011}. Using wide-frequency acoustic microphones that were positioned close to the mouth of cows, signal analysis was performed on the incoming sounds to detect and then measure ingestive events. Recordings were made at 44.1kHz at a 16 bit resolution and then filtered to reduce low frequency noise.  \\
 
-\begin{figure}[H]
+\begin{figure}[ht!]
 \begin{center}
 \leavevmode
-\includegraphics[width=0.6\textwidth]{images/clapham.png}
+\includegraphics[width=0.5\textwidth]{images/clapham.png}
 \end{center}
 \caption[PCA of bite/chew frequency spectra]{"Results from principal component analysis of frequency spectra comparing: (a) bites and chews from wideband and narrowband recordings and (b) the same data distinguished according to the two animals used in the analysis" \cite{Clapham2011}. }
 \label{clapham}
@@ -52,7 +52,7 @@ Additionally, gyroscope information adds little accuracy compared with accelerom
 Currently, CSIRO have performed experiments where sensor nodes are deployed on the eartags of cattle. Sensor nodes are capable of collecting sensor data, processing and communicating with other sensor nodes over a network. A collection of sensor nodes communicating wirelessly form a Wireless Sensor Network (WSN). The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. A photo of the eartag is shown in figure \ref{eartag} and a photo of the eartag attached to a cow is shown in figure \ref{cow}.
 
 
-\begin{figure}[H]
+\begin{figure}[ht!]
 \centering
 \begin{minipage}{.5\textwidth}
   \centering
