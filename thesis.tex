@@ -1,18 +1,21 @@
-% !TEX program = xelatex
 \documentclass[titlesmallcaps,%
                examinerscopy,%
                copyrightpage]{uqthesis}
                
 \input{defs_thesis}
+\usepackage[colorinlistoftodos]{todonotes}
+
 \begin{document}
 
 \frontmatter
-
+\listoftodos
 \input{frontstuff/frontstuff}
 
 \mainmatter
 \setlength{\parskip}{20pt} % changes vertical space between paragraphs
 \renewcommand{\baselinestretch}{1.50}\normalsize
+
+
 
 \input{sections/intro}
 \input{sections/background}

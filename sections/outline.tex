@@ -5,11 +5,11 @@ The postulated correlation between chewing events and amount of intake can be ex
 
 The main goal of the project is therefore automating the quantification of the amount of chewing events in individual livestock. As previously stated, this information can assist in the economic goals of livestock management by creating selective breeding opportunities. However, in order to achieve this goal, a framework first needs to be designed to facilitate this process of designing a chew classification system.  
 
-\newpage
-
-\section{Classifier Design Process}
+\section{Classifier Framework Design Process}
 
 Using the data recorded in the experiments outlined in section~\ref{sec:prior work}, the main goal of this project is to develop a classifier that can run on the sensor node eartag platform and quantify the amount of time individual cows spend feeding. Although the result of this work will be specific to cattle, it is envisioned that the technique will be transferable to other species of livestock. 
+
+\todo{put a big block diagram of the whole system here}
 
 \subsection*{Data Curation/Extraction}
 As outlined in  section~\ref{sec:prior work}, a number of experiments with sensors attached to cattle have been performed. This data will be used to both design a classifier and verify the performance of it. 
@@ -22,17 +22,20 @@ As soon as the data is able to be accessed through via the RESTful interface, th
 
 \subsection*{Data Annotation}
 
-Creating training and test sets is important for the design of a behaviour classifier. These sets consist of sets of input data and correct classifications for that input data. In this case, the sets will consist of chewing/not chewing events with correspoding sensor data. 
+Creating training and test sets is important for the design of a automated classifier. These sets consist of sets of input data and correct classifications for that input data. In this case, the sets will consist of chewing/not chewing events with correspoding sensor data. 
 
 To create the sets, the videos of the cattle will be viewed and events will be found. The recorded audio will also be used to precisely match the event start and end times.  
 
-To assist with this a data annotation interface  will be built. This should take the form of an application that allows sensor data to be loaded in and displayed so that a user can manually classify sections of the data as a chew/not chew event. Sections of the audio data should also be able to be played from this interface. 
+To assist with this a data annotation interface  will be built. This should take the form of an application that allows sensor data to be loaded in and displayed so that a user can manually annotate sections of the data as a chew/not chew event. Sections of the audio data should also be able to be played from this interface. 
 
+Ideally annotations should be stored in a database like system, along with the sensor data. This would simplify the process of interfacing with the annotations and extracting annotations and corresponding data. 
 
 For a good classifier, it is important to create sets that not only have positive events (eg. chewing) but also negative events (eg. any event where the animal is not chewing).
 
-\subsection*{Classifier Design} 
+\subsection*{Classifier Design and Verification} 
 
-\subsection*{Classifier Verification}
+Once some of the data in the system has been annotated, a classifier will begin to be designed. Research will be performed to determine the best underlying platform for the classifer to run on. 
 
+To allow the classifier to be designed using the already annotated data, the classifier should be able to connect directly to the annotation data and sensor data stores. For this reason, rather than develop the classifier directly for the sensor node that it will eventually run on, the classifier will be prototyped in a higher level programming language. This will allow quicker prototyping for the classifier and will be easier to verify.
 
+When the classifier has been designed, its accuracy will need to be verified. This will involve estimating the accuracy of the classifier by using it with the test set that has already been created. Care should be taken not to test the classifier using data that was used to train it. 
