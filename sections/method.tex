@@ -1,6 +1,6 @@
 \chapter{Methodology, procedure, design, etc.}
 
-This section outlines the methodology and design decisions in the project. It is broken down into the following sections. 
+This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from the experiments discussed in section  \todo{which section?}. It is broken down into the following parts.
 
 \begin{itemize}
 \item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format and then analysed
@@ -9,6 +9,8 @@ This section outlines the methodology and design decisions in the project. It is
 
 \item Classifier Design - Detailing the process of designing a classifier that is based upon the annotated data
 \end{itemize}
+
+
 
 \section{Data curation}
 
@@ -30,6 +32,8 @@ To build training and validation sets for behaviour classification, experiments 
 The Tagged Data Format is not indexable so it was necessary to convert the data stored in this format to a format in which the data was easy to access and search through. For this purpose, the Hierarchical Data Format (HDF) was selected. HDF is a data format designed for use with large amounts of scientific data that is written once but read many times. (citation here) Additionally, mechanisms were already in place to allow for HDF files to be placed on a server and accessed remotely. 
 
 Each individual sensor node was allocated its own HDF file, and each HDF file had a standard format and hierarchy. The format and hierarchy of the sensor node HDF files is shown in image xx below. The basic structure is that there is one table per sensor, with each sensor being a physical chip on the board. Each table contained rows containing the UTC time the sensor reading was taken and the corresponding sensor readings. Because of the way in which the sampling from each sensor works in the sensor node, this allows sensor readings that share sample times to be written into the same row.  
+
+\todo{diagram of HDF table setup}
 
 \subsubsection{Data conversion}
 To convert the TDF data to HDF data, a python command line utility was written that made use of the python library, PyTables which exposes the HDF5 library to python bindings. The python script was written to extract and then parse the binary, TDF data into memory before writing it all out to a specified HDF file. A full code listing of the completed command line utility, \texttt{sd2hdf} can be found in appendix blah. 
@@ -85,11 +89,29 @@ In order to develop a training set based on the recorded data it was neccesary t
 
 In order to create training and test sets so that an algorithm for classification of cow behaviour could be built it was necessary to annotate the recorded signals from the experiments performed. This meant manually looking the recorded data signals, listening to the recorded audio from the sensor nodes and watching the associated video to find individual chew events. 
 
+\todo{how annotation is stored in the table}
+
 \subsection{Annotation interface}
 
-To streamline the process of annotating the large amounts of data recorded, an annotation graphical user interface was written using python and the matplotlib library. Using the inbuilt matplotlib SpanSelector widget, an interface where sections of the data were able to be selected and then annotated was possible. This allowed for effecient annotation of the source data. 
+To streamline the process of annotating the large amounts of data recorded, an annotation interface was needed to be built. When designing the interface it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be used with more or less signals in the future. 
 
-A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the inteface. 
+The block diagram in \ref{annotation_interface_design} shows the initial design of the interface. 
+
+\todo{put in a 'design' of the interface'}
+
+To mesh well with the existing code base and for quick prototyping and cross compatibility, the annotation graphical user interface was written using python. Because much of the interface would involve displaying signal data in the way of plots, the matplotlib library was used to assist with the creation of the interface. As well as containing the tools to allow for creating data plots the matplotlib library contains widgets (for example, buttons or selector items) that can be used to make plots more dynamic. 
+
+The inbuilt matplotlib SpanSelector widget was used in the interface so that a very simple click and drag selection process could be used to select sections of data. This allows a user to select a section of data. When done, the start and end time of the selected period is displayed in the interface. The interface also contains a selector widget that allows the user to choose between different event categories to annotate, specifically either 'chew' or 'not chew'. Finally, the interface contains a button that allows the user to submit the annotation. A submitted annotation is stored in the HDF data structure discussed in section \ref{data curation - annotation}. 
+
+The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \todo{put a reference to audiolab here}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
+
+The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the 
+
+A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
+
+\todo{not here but need somewhere explaining what the videos look like}
+
+\todo{add code to appendix and reference}
 
 - annotations stored in the h5 dataset
 
