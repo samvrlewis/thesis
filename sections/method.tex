@@ -60,12 +60,9 @@ After the script was run and HDF files were produced, these were placed on a ser
 
 In the two experiments that were performed, there were some reliability issues for the sensor nodes that were used. In some cases, some sensor nodes stopped working completely and needed to be replaced while in other cases certain sensors on the sensor nodes did not record data for some periods of time. In addition to this, video was only recorded for a very small amount of time compared to the amount of sensor node data that was recorded. 
 
-In order to develop a training set based on the recorded data it was neccesary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through.
+In order to develop a training set based on the recorded data it was neccesary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through the signal data. The script found the time difference between adjacent data samples and if the difference was larger than a threshold recorded that period of time between samples as a gap. This threshold was different for each signal as each signal had different sampling rates. 
 
-
-- To get an idea for annotation of where the data was located, script was written to find what periods of time the data covered and where there were gaps
-- this was plotted along with the video data in order to focus on areas where there was data for all sensors
-- these good periods can then be annotated
+After the gaps were found then it was possible to plot the coverage of different signal nodes over the experiment time frame. An example of this is shown in figure \ref{coverage_plot}. The solid line in the figure represents continous signal coverage (no gaps in the data) whereas a gap in the line signifies there are no samples captured for that time period. 
 
 \begin{figure}[ht!]
 \begin{center}
@@ -73,7 +70,7 @@ In order to develop a training set based on the recorded data it was neccesary t
 \includegraphics[width=1\textwidth]{images/experiment4_coverage_overall.png}
 \end{center}
 \caption{Overall coverage of cow in plot 1 in experiment 4}
-\label{exp4overall}
+\label{coverage_plot}
 \end{figure}
 
 \begin{figure}[ht!]
@@ -85,9 +82,12 @@ In order to develop a training set based on the recorded data it was neccesary t
 \label{exp4overall}
 \end{figure}
 
+Using this figures it was then possible to quickly locate periods where there both signal data and video recordings existed. These periods were then able to be annotated and used for classifier design. 
+
+
 \section{Data annotation}
 
-In order to create training and test sets so that an algorithm for classification of cow behaviour could be built it was necessary to annotate the recorded signals from the experiments performed. This meant manually looking the recorded data signals, listening to the recorded audio from the sensor nodes and watching the associated video to find individual chew events. 
+In order to create training and test sets so that an algorithm for classification of cow behaviour could be built it was necessary to annotate the recorded signals from the experiments performed. This meant manually looking the recorded data signals, listening to the recorded audio from the sensor nodes and watching the associated video to find individual chew events. To assist with this process, an annotation interface was designed. 
 
 \todo{how annotation is stored in the table}
 
