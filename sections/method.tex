@@ -3,7 +3,11 @@
 This section outlines the methodology and design decisions in the project. It is broken down into the following sections. 
 
 \begin{itemize}
-\item Data Curation - The large amounts of binary data that was
+\item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format and then analysed
+
+\item Data Annotation - Detailing the process of both building an interface to annotate the signal data with chew or non chew events and using that interface to annotate the data
+
+\item Classifier Design - Detailing the process of designing a classifier that is based upon the annotated data
 \end{itemize}
 
 \section{Data curation}
@@ -52,7 +56,7 @@ After the script was run and HDF files were produced, these were placed on a ser
 
 In the two experiments that were performed, there were some reliability issues for the sensor nodes that were used. In some cases, some sensor nodes stopped working completely and needed to be replaced while in other cases certain sensors on the sensor nodes did not record data for some periods of time. In addition to this, video was only recorded for a very small amount of time compared to the amount of sensor node data that was recorded. 
 
-In order to develop a training set based on the recorded data it was neccesary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through ... .
+In order to develop a training set based on the recorded data it was neccesary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through.
 
 
 - To get an idea for annotation of where the data was located, script was written to find what periods of time the data covered and where there were gaps
