@@ -6,6 +6,9 @@
 \usepackage[colorinlistoftodos]{todonotes}
 \usepackage{xkeyval}
 \presetkeys{todonotes}{inline}{}
+\usepackage{titlesec}
+
+ 
 \begin{document}
 
 \frontmatter
@@ -14,9 +17,18 @@
 
 \mainmatter
 \setlength{\parskip}{20pt} % changes vertical space between paragraphs
-\renewcommand{\baselinestretch}{1.50}\normalsize
 
+\renewcommand{\baselinestretch}{1.5}\normalsize
 
+\titlespacing*{\section}
+{0pt}{10pt plus 1pt minus 1pt}{10pt plus 1pt minus 1pt}
+\titlespacing*{\subsection}
+{0pt}{10pt plus 1pt minus 1pt}{10pt plus 1pt minus 1pt}
+\renewcommand*{\chapterheadendvskip}{%
+  \vspace{0.725\baselineskip plus 0.115\baselineskip minus 0.192\baselineskip}%
+}
+
+\renewcommand*{\chapterheadstartvskip}{\vspace*{\baselineskip}}
 
 \input{sections/intro}
 \input{sections/background}

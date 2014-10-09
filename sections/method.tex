@@ -1,7 +1,6 @@
 \chapter{Methodology, procedure, design, etc.}
 
-This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from the experiments discussed in section  \todo{which section?}. It is broken down into the following parts.
-
+This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from experiments where cattle were filmed while eartag signal data was recorded. This section is broken down into the following parts.
 \begin{itemize}
 \item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format and then analysed
 
@@ -84,7 +83,7 @@ In order to create training and test sets so that an algorithm for classificatio
 
 \subsection{Annotation interface}
 
-To streamline the process of annotating the large amounts of data recorded, an annotation interface was needed to be built. When designing the interface it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be reused as a tool to annotate different sorts of data.
+In designing the interface for annotation it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be reused as a tool to annotate different sorts of data.
 
 Figure \ref{annotation_interface_design} shows the initial design of the interface. The interface shows the signal data from a number of different sensors. It allows a user to select a period of signal data (the red box shows the currently selected period), choose an annotation category (in this case, either 'chew' or 'not chew') and then submit the annotation. In addition, the interface also shows the time period currently selected and allows a user to play the audio from the selected period. 
 
