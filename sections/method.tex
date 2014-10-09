@@ -1,6 +1,7 @@
 \chapter{Methodology, procedure, design, etc.}
 
 This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from experiments where cattle were filmed while eartag signal data was recorded. This section is broken down into the following parts.
+
 \begin{itemize}
 \item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format and then analysed
 
@@ -9,51 +10,96 @@ This section outlines the methodology and design decisions in designing a comple
 \item Classifier Design - Detailing the process of designing a classifier that is based upon the annotated data
 \end{itemize}
 
-
-
 \section{Data curation}
 
 To build training and validation sets for behaviour classification, experiments were performed in which video was recorded of two cows with sensor nodes on both the ear and halter over a span of three days. The sensor nodes logged data from accelerometer, magnometer, gyroscope, pressure, temperature and audio sensors to SD card in the Tagged Data Format (TDF). 
 
-- data is from 2 experiments in big ridge: experiment 4 and experiment 5
-	- both experiments had two cows in two separate plots
-		- each cow with halter tag and ear tag	
-		- sometimes tags failed and were replaced	
-	- exp 4 had audio, acceleration, magnometer, gyroscope sensors, exp 5 + gps	
-	- sensor data logged to sd card with tdf data format: %%https://www.google.com.au/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0CCoQFjAA&url=http%3A%2F%2Fwww.springer.com%2Fcda%2Fcontent%2Fdocument%2Fcda_downloaddocument%2F9783319030708-c2.pdf%3FSGWID%3D0-0-45-1435816-p176319219&ei=gMxpU_iHBIfgkAWq1YDQBw&usg=AFQjCNFGliHfajzeoJYh2Q0iheHXQL4rYg&sig2=YWKuQam_2SCF0zTtXTrc3w&bvm=bv.66111022,d.dGI
-	
-- in addition, video was taken for annotation purposes.
-	- videos focused on a particular cow but sometimes both cows in shot
-
 \subsection{Data conversion and storage}
 
 \subsubsection{Data storage}
-The Tagged Data Format is not indexable so it was necessary to convert the data stored in this format to a format in which the data was easy to access and search through. For this purpose, the Hierarchical Data Format (HDF) was selected. HDF is a data format designed for use with large amounts of scientific data that is written once but read many times. (citation here) Additionally, mechanisms were already in place to allow for HDF files to be placed on a server and accessed remotely. 
+The Tagged Data Format is not indexable so it was necessary to convert the data stored in this format to a format in which the data was easy to access and search through. For this purpose, the Hierarchical Data Format (HDF) was selected. HDF is a data format designed for use with large amounts of scientific data that is written once but read many times. (citation here) Additionally, mechanisms were already in place to allow for HDF files to be placed on a server and accessed remotely using a RESTful interface. 
 
-Each individual sensor node was allocated its own HDF file, and each HDF file had a standard format and hierarchy. The format and hierarchy of the sensor node HDF files is shown in image xx below. The basic structure is that there is one table per sensor, with each sensor being a physical chip on the board. Each table contained rows containing the UTC time the sensor reading was taken and the corresponding sensor readings. Because of the way in which the sampling from each sensor works in the sensor node, this allows sensor readings that share sample times to be written into the same row.  
+Each individual sensor node was allocated its own HDF file, and each HDF file had a standard format and hierarchy. The format and hierarchy of the sensor node HDF files is shown in figure \ref{HDF file structure} below. The basic structure is that there is one table per sensor, with each sensor being a physical chip on the board. Each table contained rows containing the UTC time the sensor reading was taken and the corresponding sensor measurement readings. Because of the way in which the sampling from each sensor works in the sensor node, this allows sensor readings that share sample times to be written into the same row.  
 
-\todo{diagram of HDF table setup}
+\begin{verbbox}
+  - <Deployment name> 
+    - Data
+        - <Eartag name 1>
+            + <Sensor Name 1>
+            + <Sensor Name 2>
+
+        - <Eartag name 2>
+            + <Sensor Name 1>
+            + <Sensor Name 2>
+    - TDF
+\end{verbbox}
+\begin{figure}[ht!]
+  \centering
+  \theverbbox
+  \caption{HDF file structure}
+\end{figure}
+
+The elements marked with a \texttt{+} are tables while the elements marked with \texttt{-} are groups, which assist in organising the structure. Typically, for the experiments that took place there were five sensor tables; pressure/temperature, audio, accelerometer, magnetometer and a reset counter. 
+
+The structure of a sensor table with N measurements/sensors is presented below in figure \ref{HDF table structure}. Each table had rows of sensor readings. For example, the audio sensor had two columns, a time column and a sample column. On the other hand, the accelerometer table had four columns; a time column and a column for each of the x, y and z accelormeter readings. \\
+
+\begin{verbbox}
+Time | Sensor1 Measurement | .. | Sensor N Measurement 
+\end{verbbox}
+\begin{figure}[ht!]
+  \centering
+  \theverbbox
+  \caption{HDF table structure}
+\end{figure}
 
 \subsubsection{Data conversion}
-To convert the TDF data to HDF data, a python command line utility was written that made use of the python library, PyTables which exposes the HDF5 library to python bindings. The python script was written to extract and then parse the binary, TDF data into memory before writing it all out to a specified HDF file. A full code listing of the completed command line utility, \texttt{sd2hdf} can be found in appendix blah. 
+To convert the TDF data to HDF data, a python command line utility was written that made use of the python library, PyTables which exposes the HDF5 library to python bindings. The python script was written to extract and then parse the binary, TDF data into memory before writing it all out to a specified HDF file. A full code listing of the completed command line utility, \texttt{sd2hdf} can be found in appendix \ref{appendix - sd2hdf}. 
 
 Audio was sampled at approximately 24 kHz and 12 bits. However, to save space when saving the audio samples to SD card, audio samples were saved in chunks. This meant that only the sample time of the first audio sample in the chunk was known. To find the precise sampling period so that it was possible to record an accurate time for each individual audio sample, the time between chunks had to be used.  
 
-Initially, the size of the HDF files were over 100GB. To reduce the size of these files, the python script was modified to use BLOSC compression when writing to the HDF files. This reduced the size of the HDF files by approximately a factor of 10. 
+Initially, the size of the HDF files were over 100GB. To reduce the size of these files, the python script was modified to use BLOSC compression when writing to the HDF files. This reduced the size of the HDF files by approximately a factor of 10.
 
-After the script was run and HDF files were produced, these were placed on a server and the data was then able to be accessed remotely over a RESTful JSON interface. This allowed for downloading data within certain time periods, from certain sensors and from certain nodes. 
+After the script was run and HDF files were produced, these were placed on a server which allowed the data to be accessed remotely over a RESTful JSON interface. This allowed for downloading data within certain time periods, from certain sensors and from certain nodes. 
 
-- lots of binary data from multiple sensor nodes stored in tdf data format
-- need to convert into hdf5 for ease of access, access over the web
-	- one h5 file per experiment
-	- format of h5 file:
-		- one group per node	
-		- one table per sensor	
-		- each row is utc time and then sensor reading
-- used BLOSC compression (~10x compression achieved)
-- accessing over web interface was then possible 
-- audio a bit tricky as to save space 16 sample written with one timestamp. spacing between audio found by finding the 'average' sample rate 
-	- also a bit tricky as to save space saved either as raw, as differences or as a 'silent page'
+\subsubsection{Data extraction}
+
+The RESTful interface made it possible to easily extract JSON formatted sensor data using HTTP requests. The following URL is an example of a request for sensor data over this interface. 
+
+\url{http://livestock.sensornets.csiro.au/data/v1/network/bigridge4/platform/eartag732/sensor/LSM303DLHC\_MAG/observations?\&limit=22000\&start=2013-12-02T23:15:00\&end=2013-12-02T23:15:01} 
+
+This request will get a JSON response that contains LSM303DLHC\_MAG sensor data (which is magnometer sensor data) from an eartag named eartag732 for the Big Ridge 4 experiment between the start and end dates listed in the query. 
+
+The structure of the returned JSON is shown below in figure \ref{JSON structure}. For brevity, only the first two observations in the JSON file are shown. Each successive observation is of the form of the two shown. 
+
+\begin{verbbox}
+{
+    "query_time": "0:00:00.813353",
+
+    "observations": [
+            {
+                "magz": 0.5625,
+                "magy": 0.29555556178092957,
+                "magx": -0.05111110955476761,
+                "utc": "2013-12-03T06:09:33.580169"
+            },
+            {
+                "magz": 0.5625,
+                "magy": 0.30444443225860596,
+                "magx": -0.046666666865348816,
+                "utc": "2013-12-03T06:09:33.515869"
+            },
+        ]
+
+    "title": "showing 100 from 431999 observations"
+}
+\end{verbbox}
+\begin{figure}[ht!]
+  \centering
+  \theverbbox
+  \caption{JSON structure}
+\end{figure}
+
+The important part of the returned JSON is the data in the \texttt{observations} field. This field is a list of dictionaries where each dictionary contains measurement from the sensor along with the corresponding time that measurements were taken. In this case, because the magnometer used is triaxial, there are three measurements; \texttt{magx}, \texttt{magy}, \texttt{magz}. The time of sample is in the \texttt{utc} field which is stored as a UTC time. For other sensors, such as the audio sensor, there are not as many measurements per data point. 
 
 \subsection{Data coverage plotting}
 
@@ -102,7 +148,7 @@ The inbuilt matplotlib SpanSelector widget was used in the interface so that a v
 
 The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \cite{Cournapeau}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
 
-The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the 
+The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the currently selected time period.  
 
 A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
 
@@ -117,12 +163,13 @@ A user of the annotation interface is then able to select a node, a time period 
 
 - 3 modes: chew, bite, other
 - built annotation interface using matplotlib
-	- allows sections to be selected, a mode to be chosen and then allowed for that to be submited through RESTful interface to the server
+    - allows sections to be selected, a mode to be chosen and then allowed for that to be submited through RESTful interface to the server
 - also allowed for the audio to be saved
 - shows the time in the same format as what is displayed in the video
 
 - using this was able to annotate a lot of the data to build training set of events
 - lots of code written to assist with this general extraction
+- strategy used for selecting chew/non chew events
 
 \section{Classifier design}
 
