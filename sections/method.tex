@@ -67,18 +67,9 @@ After the gaps were found then it was possible to plot the coverage of different
 \begin{figure}[ht!]
 \begin{center}
 \leavevmode
-\includegraphics[width=1\textwidth]{images/experiment4_coverage_overall.png}
+\includegraphics[width=0.8\textwidth]{images/experiment4_coverage_zoomed.png}
 \end{center}
-\caption{Overall coverage of cow in plot 1 in experiment 4}
-\label{coverage_plot}
-\end{figure}
-
-\begin{figure}[ht!]
-\begin{center}
-\leavevmode
-\includegraphics[width=1\textwidth]{images/experiment4_coverage_zoomed.png}
-\end{center}
-\caption{Overall coverage of cow in plot 1 in experiment 4}
+\caption{Data coverage of cow in plot 1 in experiment 4}
 \label{exp4overall}
 \end{figure}
 
@@ -93,17 +84,24 @@ In order to create training and test sets so that an algorithm for classificatio
 
 \subsection{Annotation interface}
 
-To streamline the process of annotating the large amounts of data recorded, an annotation interface was needed to be built. When designing the interface it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be used with more or less signals in the future. 
+To streamline the process of annotating the large amounts of data recorded, an annotation interface was needed to be built. When designing the interface it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be reused as a tool to annotate different sorts of data.
 
-The block diagram in \ref{annotation_interface_design} shows the initial design of the interface. 
+Figure \ref{annotation_interface_design} shows the initial design of the interface. The interface shows the signal data from a number of different sensors. It allows a user to select a period of signal data (the red box shows the currently selected period), choose an annotation category (in this case, either 'chew' or 'not chew') and then submit the annotation. In addition, the interface also shows the time period currently selected and allows a user to play the audio from the selected period. 
 
-\todo{put in a 'design' of the interface'}
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.8\textwidth]{images/annotation_interface_design.png}
+\end{center}
+\caption{Annotation interface design}
+\label{annotation_interface_design}
+\end{figure}
 
 To mesh well with the existing code base and for quick prototyping and cross compatibility, the annotation graphical user interface was written using python. Because much of the interface would involve displaying signal data in the way of plots, the matplotlib library was used to assist with the creation of the interface. As well as containing the tools to allow for creating data plots the matplotlib library contains widgets (for example, buttons or selector items) that can be used to make plots more dynamic. 
 
 The inbuilt matplotlib SpanSelector widget was used in the interface so that a very simple click and drag selection process could be used to select sections of data. This allows a user to select a section of data. When done, the start and end time of the selected period is displayed in the interface. The interface also contains a selector widget that allows the user to choose between different event categories to annotate, specifically either 'chew' or 'not chew'. Finally, the interface contains a button that allows the user to submit the annotation. A submitted annotation is stored in the HDF data structure discussed in section \ref{data curation - annotation}. 
 
-The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \todo{put a reference to audiolab here}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
+The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \cite{Cournapeau}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
 
 The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the 
 
