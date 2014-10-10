@@ -3,7 +3,7 @@
 This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from experiments where cattle were filmed while eartag signal data was recorded. This section is broken down into the following parts.
 
 \begin{itemize}
-\item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format and then analysed
+\item Data Curation - Detailing the process of storing the large amount of binary data in an easy to access format for analysis
 
 \item Data Annotation - Detailing the process of both building an interface to annotate the signal data with chew or non chew events and using that interface to annotate the data
 
@@ -17,6 +17,7 @@ To build training and validation sets for behaviour classification, experiments 
 \subsection{Data conversion and storage}
 
 \subsubsection{Data storage}
+\label{Data storage}
 The Tagged Data Format is not indexable so it was necessary to convert the data stored in this format to a format in which the data was easy to access and search through. For this purpose, the Hierarchical Data Format (HDF) was selected. HDF is a data format designed for use with large amounts of scientific data that is written once but read many times. (citation here) Additionally, mechanisms were already in place to allow for HDF files to be placed on a server and accessed remotely using a RESTful interface. 
 
 Each individual sensor node was allocated its own HDF file, and each HDF file had a standard format and hierarchy. The format and hierarchy of the sensor node HDF files is shown in figure \ref{HDF file structure} below. The basic structure is that there is one table per sensor, with each sensor being a physical chip on the board. Each table contained rows containing the UTC time the sensor reading was taken and the corresponding sensor measurement readings. Because of the way in which the sampling from each sensor works in the sensor node, this allows sensor readings that share sample times to be written into the same row.  
@@ -62,7 +63,7 @@ Initially, the size of the HDF files were over 100GB. To reduce the size of thes
 After the script was run and HDF files were produced, these were placed on a server which allowed the data to be accessed remotely over a RESTful JSON interface. This allowed for downloading data within certain time periods, from certain sensors and from certain nodes. 
 
 \subsubsection{Data extraction}
-
+\label{extraction}
 The RESTful interface made it possible to easily extract JSON formatted sensor data using HTTP requests. The following URL is an example of a request for sensor data over this interface. 
 
 \url{http://livestock.sensornets.csiro.au/data/v1/network/bigridge4/platform/eartag732/sensor/LSM303DLHC\_MAG/observations?\&limit=22000\&start=2013-12-02T23:15:00\&end=2013-12-02T23:15:01} 
@@ -125,7 +126,43 @@ Using this figures it was then possible to quickly locate periods where there bo
 
 In order to create training and test sets so that an algorithm for classification of cow behaviour could be built it was necessary to annotate the recorded signals from the experiments performed. This meant manually looking the recorded data signals, listening to the recorded audio from the sensor nodes and watching the associated video to find individual chew events. To assist with this process, an annotation interface was designed. 
 
-\todo{how annotation is stored in the table}
+\subsection{Annotation storage}
+
+Annotations were stored in the HDF system as described in section \ref{Data storage}. Annotations were considered a type of sensor so that each eartag device would have its own annotation table in the data system. The structure for the annotation table followed from the structure of the other sensor tables and is shown below in figure \ref{annotation table structure}.
+
+\begin{verbbox}
+Time | Event | Duration | Annotator | Confidence | Reference
+\end{verbbox}
+\begin{figure}[ht!]
+  \centering
+  \theverbbox
+  \caption{HDF table structure}
+\end{figure}
+
+The purpose of each field and the format that the data is stored in is discussed in the list below.
+
+\begin{itemize}
+\item Time: The start time of the event as an UTC time.
+
+\item Event: A string of what the event was, for example 'chew' or `not chew'.
+
+\item Duation: The length of the event as an integer in microsecond.
+
+\item Annotator: Describes the annotation method used to make the annotation. This could either be a person's name in the case of a manual annotation or, in the case of an automated classifier, the type of automated classifer that made the annotation.
+
+\item Confidence: The confidence level that the annotator had when annotating as an integer percentage
+
+\item Reference: A string describing was used to make the annotation. For a human annotator this could be a particular bit of data or a video file. 
+\end{itemize}
+
+Because the annotation was stored in the same way as the sensor data, it could be accessed in the same way through the RESTful JSON interface that was previously described in section \ref{extraction}. 
+
+\subsection{Annotation submission}
+As the data from the annotations was generated in a different way to the sensor data, a different method had to be devised to submit annotations to the HDF system. To do this, the \texttt{annotation\_push.py} command line utility was written. A full code listing of this utility can be found in appendix \label{appendixannotationpush}.
+
+The \texttt{annotation\_push.py} file was written so that it could be used as a library with other python code. This allowed the annotation interface (described in the next section) to use it for submitting annotations. 
+
+The script works by formatting the annotation data (the fields for the table as well as information about what node and deployment the annotation corresponds to) into a dictionary which it then converts to JSON before submitting to an ingestion web-service. The ingestion web-service takes the JSON and enters the information into the corresponding table. 
 
 \subsection{Annotation interface}
 
@@ -144,12 +181,11 @@ Figure \ref{annotation_interface_design} shows the initial design of the interfa
 
 To mesh well with the existing code base and for quick prototyping and cross compatibility, the annotation graphical user interface was written using python. Because much of the interface would involve displaying signal data in the way of plots, the matplotlib library was used to assist with the creation of the interface. As well as containing the tools to allow for creating data plots the matplotlib library contains widgets (for example, buttons or selector items) that can be used to make plots more dynamic. 
 
-The inbuilt matplotlib SpanSelector widget was used in the interface so that a very simple click and drag selection process could be used to select sections of data. This allows a user to select a section of data. When done, the start and end time of the selected period is displayed in the interface. The interface also contains a selector widget that allows the user to choose between different event categories to annotate, specifically either 'chew' or 'not chew'. Finally, the interface contains a button that allows the user to submit the annotation. A submitted annotation is stored in the HDF data structure discussed in section \ref{data curation - annotation}. 
+The inbuilt matplotlib SpanSelector widget was used in the interface so that a very simple click and drag selection process could be used to select sections of data. This allows a user to select a section of data. When done, the start and end time of the selected period is displayed in the interface. The interface also contains a selector widget that allows the user to choose between different event categories to annotate, specifically either 'chew' or `not chew'. Finally, the interface contains a button that allows the user to submit the annotation. A submitted annotation is stored in the HDF data structure discussed in section \ref{data curation - annotation}. 
 
 The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \cite{Cournapeau}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
 
 The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the currently selected time period.  
-
 A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
 
 \todo{not here but need somewhere explaining what the videos look like}
@@ -158,18 +194,13 @@ A user of the annotation interface is then able to select a node, a time period 
 
 - annotations stored in the h5 dataset
 
+\subsection{Annotation set building}
 
-\subsection{Training set building}
+Events were classified into two different classification categories when building the training set. These modes were a 'chew' mode and a 'not chew' mode. It was important to build the classification set to contain both of these events so that a classifier would know how to classify both. 
 
-- 3 modes: chew, bite, other
-- built annotation interface using matplotlib
-    - allows sections to be selected, a mode to be chosen and then allowed for that to be submited through RESTful interface to the server
-- also allowed for the audio to be saved
-- shows the time in the same format as what is displayed in the video
+It was also important to build the training set such that the events selected roughly represented the all variations in the two modes. This meant ensuring that events were picked from a range of different times over a range of different conditions.
 
-- using this was able to annotate a lot of the data to build training set of events
-- lots of code written to assist with this general extraction
-- strategy used for selecting chew/non chew events
+To find time periods to classify, the videos of the experiment were used. These videos helped to broadly classify a particular cow's behaviour over a time period but were not very helpful in finding the exact time periods of events. As mentioned in the previous section, it was necessary to use the audio and other signal data to precisely select the start and end of events. 
 
 \section{Classifier design}
 
@@ -189,5 +220,7 @@ matlab - not free but easy to prototype
 python - os/workflow already in python/somewhat easy to prototype/good libraries avaliable
 C - what an algorithm would eventually implemented in on device, hard to prototype and quickly change things
 
+
+\subsection{Partitioning the annotation set}
 
 \section{Classifier evaluation}
