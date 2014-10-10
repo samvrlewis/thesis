@@ -176,7 +176,7 @@ Figure \ref{annotation_interface_design} shows the initial design of the interfa
 \includegraphics[width=0.8\textwidth]{images/annotation_interface_design.png}
 \end{center}
 \caption{Annotation interface design}
-\label{annotation_interface_design}
+\label{annotationinterfacedesign}
 \end{figure}
 
 To mesh well with the existing code base and for quick prototyping and cross compatibility, the annotation graphical user interface was written using python. Because much of the interface would involve displaying signal data in the way of plots, the matplotlib library was used to assist with the creation of the interface. As well as containing the tools to allow for creating data plots the matplotlib library contains widgets (for example, buttons or selector items) that can be used to make plots more dynamic. 
@@ -204,13 +204,35 @@ To find time periods to classify, the videos of the experiment were used. These 
 
 \section{Classifier design}
 
-\subsection{Selection of machine learning algorithm}
+\subsection{Selection of algorithm}
 
-Put a table here?
+In choosing an algorithm to use to classify the signal data into chew or not chew categories, an investigation was performed into different types of algorithms and paradigms. The two main paradigms that were examined were algorithms that followed a simple thresholding/signal processing approach and supervised machine learning algorithms. 
+
+A preliminary investigation was done in writing a simple classifier. This involved examination of the annotated data for trends in the data for the different classification categories.  
+
+The machine learning approach was found to be better in its ability to take full advantage of the high dimensionality of the signal data. A machine learning algorithm is able to take advantage of trends and patterns in the data that a human may not be able to directly identify. This in contrast to signal processing approach where trends in the data need to be manually found.
+
+Once the machine learning approach was decided upon, a range of different machine learning algorithms were considered for the classifier. Table \ref{machine larning table} shows the algorithms and lists basic properties of those algorithms. 
 
 SVM - easy to use, fast to converge, easy to use on embedded systems, something about how to avoids over fitting
 
 ANN - doesn't always converge, 
+
+The SVM algorithm was chosen for the classifier. SVM's have many advangtageous features for this project, including being fast to converge. The SVM algorithm has also be extensively studied and used in practice so there are many free and open source software libraries that can be used to implement the algorithm. In addition, the SVM algorithm was also appealing as it has shown to be feasible to run on embedded and resource constrained hardware. 
+
+\subsection{Selection of classifier prototyping software}
+
+
+\subsection{Classifier framework}
+
+features - normalise and save the normaliser
+split
+
+\subsection{Selection of features}
+
+
+
+
 
 %%paper with stuff about ML algos for emebedded systems %%http://nesl.ee.ucla.edu/courses/ee202a/shared/samples/projects/2008f/Adam_Stoelting.pdf%%
 
@@ -221,6 +243,14 @@ python - os/workflow already in python/somewhat easy to prototype/good libraries
 C - what an algorithm would eventually implemented in on device, hard to prototype and quickly change things
 
 
-\subsection{Partitioning the annotation set}
+
 
 \section{Classifier evaluation}
+
+
+\subsection{Partitioning the annotation set}
+
+
+\subsection{Confidence level estimation}
+
+\subsection{Feature scoring (maybe this is better in the section before though)}
