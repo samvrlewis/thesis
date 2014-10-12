@@ -204,6 +204,8 @@ To find time periods to classify, the videos of the experiment were used. These 
 
 \section{Classifier design}
 
+The design of the classifier comprised of two parts; deciding on an algorithm to use and then investigating the best way to design or train it and then implementing methods to validate and test the accuracy of the classifer.  
+
 \subsection{Selection of algorithm}
 
 In choosing an algorithm to use to classify the signal data into chew or not chew categories, an investigation was performed into different types of algorithms and paradigms. The two main paradigms that were examined were algorithms that followed a simple thresholding/signal processing approach and supervised machine learning algorithms. 
@@ -216,25 +218,48 @@ Once the machine learning approach was decided upon, a range of different machin
 
 SVM - easy to use, fast to converge, easy to use on embedded systems, something about how to avoids over fitting
 
-ANN - doesn't always converge, 
+ANN - doesn't always converge, can use more complicated maths than the linear equations in SVM (?)
 
-The SVM algorithm was chosen for the classifier. SVM's have many advangtageous features for this project, including being fast to converge. The SVM algorithm has also be extensively studied and used in practice so there are many free and open source software libraries that can be used to implement the algorithm. In addition, the SVM algorithm was also appealing as it has shown to be feasible to run on embedded and resource constrained hardware. 
+Random Forest - 
+
+Nearest Neighbour - 
+
+The SVM algorithm was chosen for the classifier. As well as being fast to converge to a result, the SVM algorithm has also be extensively studied and used in practice so there are many free and open source software libraries that can be used to implement the algorithm. In addition, the SVM algorithm was also appealing as it has shown to be feasible to run on embedded and resource constrained hardware. 
 
 \subsection{Selection of classifier prototyping software}
 
+Although the classifier would eventually run on embedded hardware and need to be written in the C programming language, the classifier was designed and prototyped using Python. This allowed for easy combination with the rest of the data extraction and storage framework. 
+
+Python also has the advantage of being a mature development environment, particularly for scientific computing. Libraries such as numpy \cite{numpy}, scipy \cite{scipy} and matplotlib \cite{matplotlib} enabled easy analysis and quick prototyping. 
+
+Writing the classifier training and validation parts of the framework in python also enabled the framework to fit together better, allowing for a complete work flow in python. This not only minimises the need for extra development software but also simplifies the process of writing extensions to the framework in the future. 
+
+The scikits.learn package was used for most of the machine learning algorithm design process. As well as having a full implementation of the SVM algorithm, it also includes numerous other useful utilities for such tasks as normalisation and training/test set partitioning. 
 
 \subsection{Classifier framework}
 
-features - normalise and save the normaliser
-split
+The process to build a robust classifier consisted of:
+
+\begin{enumerate}
+\item Retrieving the annotations and annotated data
+
+\item Randomly splitting the complete data set into training and validation sets
+
+\item Extracting features from the data
+
+\item Statistically normalising the features
+
+\item Using the features to train a SVM classifier
+
+\item Validating and assessing the accuracy of the classifier using the validation set
+\end{enumerate}
+
+This process is summarised below in figure \ref{classiferframework}.
 
 \subsection{Selection of features}
 
 
 
-
-
-%%paper with stuff about ML algos for emebedded systems %%http://nesl.ee.ucla.edu/courses/ee202a/shared/samples/projects/2008f/Adam_Stoelting.pdf%%
 
 choice of software package to use too?
 
@@ -254,3 +279,7 @@ C - what an algorithm would eventually implemented in on device, hard to prototy
 \subsection{Confidence level estimation}
 
 \subsection{Feature scoring (maybe this is better in the section before though)}
+
+
+%% maybe useful stuff:
+%% paper with stuff about ML algos for emebedded systems %%http://nesl.ee.ucla.edu/courses/ee202a/shared/samples/projects/2008f/Adam_Stoelting.pdf%%
