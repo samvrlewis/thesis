@@ -1,26 +1,53 @@
 \chapter{Project outline}
-It has previously been found that there is a good relationship between the intake of digestible organic matter and gain in cattle \cite{Lippke1980}. Extending this, we postulate that there is a correlation between the amount of chewing events (ie individual chews or bites) and the amount of intake. Therefore, rather than trying to exactly quantify the intake of pasture in livestock the project will aim to quantify the amount of chewing events. 
 
-The postulated correlation between chewing events and amount of intake can be experimentally confirmed. By weighing groups of livestock individually before and after a trial a relationship between the amount of time the animal spent feeding and the weight it gained can be confirmed. 
+From the section \ref{impacts}, it was determined that a classifier to measure cattle feed efficiency should be built that can:
 
-The main goal of the project is therefore automating the quantification of the amount of chewing events in individual livestock. As previously stated, this information can assist in the economic goals of livestock management by creating selective breeding opportunities. However, in order to achieve this goal, a framework first needs to be designed to facilitate this process of designing a chew classification system.  
+\begin{itemize}
+\item Run in real time on a sensor node
+\item Make classifications from sensor data
+\item Count the number of chews individual cattle make
+\end{itemize}
 
-\section{Classifier Framework Design Process}
+However, to do this in general, for any animal phenotypic trait measurement problem that can be observed through sensor data the following process needs to be undertaken. 
 
-Using the data recorded in the experiments outlined in section~\ref{sec:prior work}, the main goal of this project is to develop a classifier that can run on the sensor node eartag platform and quantify the amount of time individual cows spend feeding. Although the result of this work will be specific to cattle, it is envisioned that the technique will be transferable to other species of livestock. 
+\begin{enumerate}
+\item Identify the trait wanting to be captured (for feed efficiency, number of chews).
+
+\item Experimentally record sensor data while the livestock are in their commercial environment. 
+
+\item Curate data so that it can easily be queried and searched through
+
+\item Annotate data, classifying when the animal is exhibiting the particular trait of interest and when it is not
+
+\item Using the previously annotated data to design an algorithm to classify the trait of interest
+
+\item Testing the performance of the designed algorithm against other annotated data
+
+\item Implementation of the algorithm on the embedded hardware to run in the field
+\end{enumerate}
+
+The main goal of the thesis is to produce a framework that facilitates the process of rapidly developing a classification algorithm using experimentally recorded data. This is contextualised through the cattle feed effeciency example but, as previously stated, the procedure will be similar for any other phenotype that can be observed through sensor data.
+
+\section{Classifier Development Framework }
+
+A block diagram of the framework needed to develop a classifier to classify phenotypic information from time-series sensor data (such as the data from the experiments outlined in section~\ref{sec:prior work}) is shown in figure \ref{frameworkblock}
 
 \missingfigure{Block diagram of whole system}
 
-\subsection*{Data Curation/Extraction}
+The purpose for each block of the framework is discussed in the next sections.
+
+\todo{this probably needs to be more general - less about cows}
+
+\subsection{Data Curation/Extraction}
 As outlined in  section~\ref{sec:prior work}, a number of experiments with sensors attached to cattle have been performed. This data will be used to both design a classifier and verify the performance of it. 
 
-The eartag stores data in the Tagged Data Format (TDF - see section~\ref{TDF} for more details) on to SD storage. Because of the large amount of sensor data collected experimentally, it would be convenient to curate the data so it is easier to access. Presently, the data is stored in a binary format; the first task of the project will be extracting and then converting the data into the Hierarchical Data Format (HDF). HDF is designed for use with large datasets of numerical data so it is perfect for the task.
+The eartag stores data in the Tagged Data Format (TDF - see section~\ref{TDF} for more details) on SD storage. Because of the large amount of sensor data collected experimentally, it would be convenient to curate the data so it is easier to access. Presently, the data is stored in a binary format; the first task of the project will be extracting and then converting the data into the Hierarchical Data Format (HDF). HDF is designed for use with large datasets of numerical data so it is perfect for the task.
 
 Once the data has been converted into the HDF format it can be accessed through the RESTful Application Programming Interface (API). This allows for simple remote data access via a web address. The RESTful API also allows for data querying and simple statistics which will simplify the process of extracting data.
 
 As soon as the data is able to be accessed through via the RESTful interface, the next step will be to investigate the data to find behavioural events for classification. This will involve finding when there is overlap between sensor data recordings and video so that the sensor data can be annotated with behavioural information.
 
-\subsection*{Data Annotation}
+\subsection{Data Annotation}
 
 Creating training and test sets is important for the design of a automated classifier. These sets consist of sets of input data and correct classifications for that input data. In this case, the sets will consist of chewing/not chewing events with correspoding sensor data. 
 
@@ -32,7 +59,7 @@ Ideally annotations should be stored in a database like system, along with the s
 
 For a good classifier, it is important to create sets that not only have positive events (eg. chewing) but also negative events (eg. any event where the animal is not chewing).
 
-\subsection*{Classifier Design and Verification} 
+\subsection{Classifier Design and Verification} 
 
 Once some of the data in the system has been annotated, a classifier will begin to be designed. Research will be performed to determine the best underlying platform for the classifer to run on. 
 

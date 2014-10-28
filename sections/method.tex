@@ -258,8 +258,7 @@ This process is summarised below in figure \ref{classiferframework}.
 
 \subsection{Selection of features}
 
-
-
+In order to design a robust algorithm that could classify signal data into categories, features of the data need to first be extracted from the data. Features can be the result of running simple functions over a small dataset, such as a min, max or mean operation but 
 
 choice of software package to use too?
 
@@ -267,16 +266,22 @@ matlab - not free but easy to prototype
 python - os/workflow already in python/somewhat easy to prototype/good libraries avaliable
 C - what an algorithm would eventually implemented in on device, hard to prototype and quickly change things
 
-
-
-
 \section{Classifier evaluation}
 
+In order to properly evaluate the performance of a potential classifier, a framework to evaluate the classifier needed to be built. This classifier would be tested on previously annotated datasets that were not used in the classifier design/training phases. 
 
 \subsection{Partitioning the annotation set}
 
+To partition the previous annotated data set into both a set to train the classifier and a set to test the classifier, the \texttt{train\_test\_split} function was used from the \texttt{scikits.learn} toolkit. This function takes a X matrix containing columns of features and a Y vector containing the corresponding annotation for each column. 
+
+The function can then randomly split X and Y into a training and testing set. This ensures that there is diversity across both sets. The size of each set can also be controlled by passing a parameter to the function. 
+
+This splitting of the annotated set was performed after the extraction of the features from the data but before the features were scaled. This is so the scaler would be created only from the training data so that it is not biased by data that was not used to train it. 
 
 \subsection{Confidence level estimation}
+As it is possible to seed the random number generator the \texttt{train\_test\_split} method uses to split the data set, this feature was used to estimate a confidence level of a classifier. 
+
+By using a number of different seeds for the \texttt{train\_test\_split} method, classifiers would be trained and tested on different parts of the data. Doing this enough times allowed for an estimation of the range of accuracy of the classifier. This helped to ensure the classifier was robust. 
 
 \subsection{Feature scoring (maybe this is better in the section before though)}
 

@@ -34,6 +34,8 @@ Though these machine learning and statistical modelling techniques have proved s
 
 The study found that one of the most distinguishing characteristics of a bite was high frequencies from the initial ripping of forage. Energies between 17kHz and 22kHz were considered when looking for bite events and this was shown to be an effective choice as seen in figure \ref{clapham}. The figure shows a principle components analysis comparing a wide-band and narrow-band approach; it can be seen that the wide-band approach would be much better for classifying events as the events cluster more. Thresholding of energy levels in this frequency band of interest was then used to classify bites and distinguish from other spurious events. This achieved a 95 \% claimed accuracy in identifying bites. Additionally it was found that cross-talk from nearby livestock only interfered with classification in a very small amount of cases. 
 
+To assist in a quantifiable way to measure cattle feed intake, a study by Lippke \cite{Lippke1980} found that there is a good relationship between the intake of digestible organic matter and weight gain for cattle. 
+
 \section{Impact of previous work}
 
 Machine learning, pattern recognition and thresholding techniques have been used in automating classification of animal behaviour with success as seen in section 2.1; however in these studies the classification was not performed in real time. Having to collect and then later analyse data is cumbersome and does not scale well. It would be more practical to have the classification running independently in real time as the data arrives. Not only does this give up-to-date classification at all times but also assists in the management of livestock as the activity of individual livestock would be observable. 
@@ -46,6 +48,7 @@ In considering appropriate sensor data to use with such a classification device,
 
 Additionally, gyroscope information adds little accuracy compared with accelerometer data \cite{Gerencser2013}. For machine learning applications it was found that standard deviation, minimum and maximum values were the most useful \cite{Gerencser2013}. 
 
+Extending on the work of Lippke \cite{Lippke1980} in which it was found there is a relationship between cattle weight gain and organic intake, it can be postulated that there is a correlation between the amount of chewing events (ie individual chews or bites) and the amount of intake. Therefore, rather than trying to exactly quantify the intake of pasture in livestock exactly, the number of chews a cattle made can be counted instead.
 
 \section{Prior work on project}
 \label{sec:prior work}
