@@ -50,28 +50,5 @@ Additionally, gyroscope information adds little accuracy compared with accelerom
 
 Extending on the work of Lippke \cite{Lippke1980} in which it was found there is a relationship between cattle weight gain and organic intake, it can be postulated that there is a correlation between the amount of chewing events (ie individual chews or bites) and the amount of intake. Therefore, rather than trying to exactly quantify the intake of pasture in livestock exactly, the number of chews a cattle made can be counted instead.
 
-\section{Prior work on project}
-\label{sec:prior work}
-Currently, CSIRO have performed experiments where sensor nodes are deployed on the eartags of cattle. Sensor nodes are capable of collecting sensor data, processing and communicating with other sensor nodes over a network. A collection of sensor nodes communicating wirelessly form a Wireless Sensor Network (WSN). The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. A photo of the eartag is shown in figure \ref{eartag} and a photo of the eartag attached to a cow is shown in figure \ref{cow}.
 
 
-\begin{figure}[ht!]
-\centering
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=0.4\textwidth]{images/eartag.png}
-  \caption{Eartag}
-  \label{eartag}
-\end{minipage}%
-\begin{minipage}{.5\textwidth}
-  \centering
-  \includegraphics[width=.5\textwidth]{images/cow.jpg}
-  \caption{Cow wearing eartag}
-  \label{cow}
-\end{minipage}
-\end{figure}
-
-
-The WSN platform has been used for animal behaviour classification in the past as seen in section 2.1. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
-
-CSIRO have performed experiments in a variety of environmental conditions where time-stamped data from sensor nodes attached to cattle is recorded while the cattle behaviour is recorded with video. In this way, data from the eartag can be matched with particular behaviours of the cattle. A classification algorithm can then be designed using this data.

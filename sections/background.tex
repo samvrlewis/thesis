@@ -5,18 +5,41 @@ To contextualise and drive the development of a framework for the development of
 
 Feed effeciency in cattle is a phenotypic trait that is important for cattle manager. Conversion of feed to red meat in livestock is inherently inefficient in terms of feed intake to weight gain. For beef, current estimates of the ratio of feed intake to weight gain are between 5:1 and 10:1 \cite{Garnett2009}. Opportunities to improve this efficiency through genetic controls such as breed substitution, crossbreeding and genetic selection exist \cite{Hill2012} but data that shows how efficient individual animals are at converting feed to meat is essential in knowing which livestock to breed. This phenotype information can be used to extrapolate information about the genome which allows for the development of selection criteria for breeding objectives \cite{Pollak2012}.  
 
-However, this specific livestock phenotype information is difficult to empirically obtain and there is currently a lack of data available. Current recording techniques have focused mainly on animals in feedlots, where the animals are kept in pens and fed \textit{ad libitum} at regulated times \cite{Arthur2005}.
+However, this specific livestock phenotype information is difficult to empirically obtain and there is currently a lack of data available. Current recording techniques have focused mainly on animals in feedlots, where the animals are kept in pens and fed \textit{ad libitum} at regulated times \cite{Arthur2005} \cite{Arthur}.
 
 This difficulty is compounded when considering livestock in pasture. Livestock in pasture feed directly from the pasture so it is not possible to regulate feeding times. Manually measuring feed intake of livestock in pasture is not practical as it would require significant manpower. Even in feedlots, where the process of measuring intake is easier because of the controlled way in which feeding is conducted, the cost of manpower is cited as the main reason for current lack of recording \cite{Barwick2010}. Furthermore, since heritability is both a property of the population and the environment \cite{Falconer1996}, measuring the traits of livestock in feedlots would not necessarily capture the traits of the same livestock in pasture. Attempts to capture this data through the use of chemical  markers to measure pasture intake in studies have had some success \cite{Barlow2009} \cite{Dove2006}; however, chemical markers have limitations and can only be used for short time periods. Therefore, to gain a robust understanding of the phenotype of individual animals, longer time periods of intake measurement are needed.
 
 Opportunities exist in using devices to automate the collection of behavioural information however developing a practical measures of intake for livestock in pasture currently remains a serious challenge \cite{Cottle2013}. 
 
+
+\section{Classification algorithms}
+In general, a classification algorithm takes some input and decides the class that that input should be categorised as \cite{xu2005survey}. For example, a classification algorithm could take five seconds of audio and categorise if there was human speech in the audio. 
+
+One way to develop such a classification algorithm is a technique called \textit{supervised learning} in which a training set of data needs to be first constructed. This set of data contains example data that has been already classified (usually manually by a human) so that the algorithm can discover patterns and learn the rules needed to classify the data successfully \cite{mohri2012foundations}. This set of data is typically referred to as a \textit{training data set}. 
+
+This learning phase is typically followed by a validation or testing phase \cite{mohri2012foundations}. In order to measure the accuracy of an algorithm it is tested against previously manually classified example data that was not used in the learning phase. This example data is usually refered to as a \textit{test data set}. By testing the algorithm against data that was not used to train the algorithm, the robustness of the algorithm is tested. To further test the robustness of the algorithm there should also be large amounts of diversity between the example data in the test and training data sets.
+
+This means that the steps to develop a classification algorithm is as follows:
+
+\begin{enumerate}
+\item Collect data
+
+\item Annotate data into wanted categories
+
+\item Split annotated data into training/testing sets
+
+\item Develop classifier using training set
+
+\item Test accuracy of classifier using testing set
+\end{enumerate}
+
+This process is somewhat complex so developing a framework that could work with time series data collected from sensor nodes for the purpose of phenotype measurement would be useful. 
+
 \section{Wireless Sensor Networks}
-Wireless Sensor Networks are collections of small computers connected to sensors such as acceloremeter, magnetometer, audio etc. These small computers are named 'sensor nodes' and can perform processing on collected sensor data before communicating, typically over a radio connection, with other sensor nodes in the network. The sensors nodes are typically low power devices that can run in the field for extended periods of time. 
+Wireless Sensor Networks are collections of small computers connected to sensors such as acceloremeter, magnetometer, audio etc. These small computers are named 'sensor nodes' and can perform processing on collected sensor data before communicating, typically over a radio connection, with other sensor nodes in the network.  The sensors nodes are typically low power devices that can run in the field for extended periods of time. \cite{lewis2004wireless}
 
 \subsection{Eartag Platform}
-
-The Australian Commonwealth Scientific and Industrial Research Organisation (CSIRO) have previously developed sensor nodes that can non intrusively fit onto livestock and collect signal data including inertial measurement, Global Positioning System (GPS) measurement and audio data \cite{Guo2006}. As well as simply collecting signal data, these devices can also perform some processing on the data. There is a potential for these devices to be used for classifying livestock phenotypes such as feed efficiency.
+The Australian Commonwealth Scientific and Industrial Research Organisation (CSIRO) have previously developed sensor nodes that can non intrusively fit onto livestock and collect signal data including inertial measurement, Global Positioning System (GPS) measurement and audio data \cite{Guo2006}. As well as simply collecting signal data, these devices can also perform some processing on the data and send data over radio. There is a potential for these devices to be used for classifying livestock phenotypes such as feed efficiency.
 
 For cattle, the CSIRO have developed a cattle eartag platform. A photo of the eartag is shown in figure \ref{eartag} and a photo of the eartag attached to a cow is shown in figure \ref{cow}.
 
@@ -36,50 +59,68 @@ For cattle, the CSIRO have developed a cattle eartag platform. A photo of the ea
 \end{minipage}
 \end{figure}
 
-The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope.
+The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. 
 
-\section{Classification algorithms}
-In general, a classification algorithm takes some input and decides the class that that input should be categorised as \cite{someone}. For example, a classification algorithm could take five seconds of audio and categorise if there was human speech in the audio. 
+The WSN platform has been used for animal behaviour classification in the past as seen in section 2.1. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
 
-In order to develop such a classification algorithm, a training set of data usually needs to be first constructed. This set of data contains example data that has been already classified (usually manually by a human) so that the algorithm can discover patterns and learn the rules needed to classify the data successfully \cite{someone}. This set of data is typically referred to as a \textit{training data set}. 
+\section{Feed effeciency experiments}
 
-This learning phase is typically followed by a validation or testing phase. In order to measure the accuracy of an algorithm it is tested against previously manually classified example data that was not used in the learning phase. This example data is usually refered to as a \textit{test data set}. By testing the algorithm against data that was not used to train the algorithm, the robustness of the algorithm is tested. To further test the robustness of the algorithm there should also be large amounts of diversity between the example data in the test and training data sets.
+Using the eartag platform previously mentioned, CSIRO have performed experiments in a variety of environmental conditions where time-stamped data from sensor nodes attached to cattle is recorded to local storage while the cattle behaviour is recorded with video. In this way, data from the eartag can be matched with particular behaviours of the cattle. A classification algorithm can then be designed using this data.
 
-This means that the steps to develop a classification algorithm is as follows:
+An example frame of the video recorded data is shown in figure \ref{cowvideo}. The board on the right of the frame shows the current Coordinated Universal Time (UTC) time (excluding the current year) in a compacted format. This allows events in the video to be quickly referenced against the time sensor data.
 
-\begin{enumerate}
-\item Collect data
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.75\textwidth]{images/cowvideo.png}
+\end{center}
+\caption[Frame of cattle video]{An example frame from the experiments performed by CSIRO. Two cows are filmed while wearing eartags that are saving time series data to local storage. The board to the right of the frame shows a reference to the current UTC time.}
+\label{cowvideo}
+\end{figure}
 
-\item Annotate data into wanted categories
+These videos, along with the recorded time series data would allow for training and testing sets to be created for the purpose of developing a classification algorithm.
 
-\item Split annotated data into training/testing sets
+\section{Technologies}
 
-\item Develop classifier using training set
+In developing the framework, there were a number of technologies that were used. This section serves as a reference to give details on the significant technologies that were used. 
 
-\item Test accuracy of classifier using testing set
-\end{enumerate}
+\subsection{REST}
 
-Developing a framework that could work with time series data collected from sensor nodes for the purpose of phenotype measurement would be useful. 
-%maybe there'd be good resources about 'machine learning processes?'
+%http://support.sas.com/documentation/cdl/en/wbsvcdg/62759/HTML/default/viewer.htm#n0uxdl0ugxduw6n1gduq1rcbo7i5.htm
 
-\section{RESTful}
-Representational state transfer (REST) is a way of architectually making data avaliable. The principle of REST is that data should be avaliable by reference rather than complete copy. This simplifies the process of sharing data. 
+Representational state transfer (REST) is a particular architectual style for software systems. The principle of REST is that resources should be avaliable by reference rather than complete copy. This simplifies the process of sharing data. 
 
-\section{HDF}
+In REST, requests are submitted as URIs. This allows users interracting with resources to not have to know the underlying API for resource interraction. Instead, they could, for example, post a Hypertext Transfer Protocol (HTTP) GET request to retrieve some data. 
+
+Web services that confirm to the REST style are called \textit{RESTful}. RESTful interfaces can return data in any format they choose. A popular choice is the human readable, JavaScript Object Notation (JSON) format. JSON is explored in the next section.
+
+Having data avaliable over a RESTful webservice would be of benefit as it would allow for an API accessible by any programming language that can make HTTP requests.
+
+\subsection{JSON}
+
+JSON, or JavaScript Object Notation, is a popular data format used for web services. It presents data in a compact, human readable format. JSON is used to represent objects as strings that can be transmitted over HTTP. 
+
+Libaries for JSON exist in most mainstream programming languages and decoding/encoding to or from JSON is fast.
+
+\subsection{HDF}
 The Hierarchal Data Format (HDF) is a data format that is commonly used for storing large amounts of scientific data that will be written once, read often but not updated often. Is it commonly used for storing data from scientific experiments. 
 
-\section{TDF}
+HDF files contain groups of tables. Each table has column names but there is not data types associate with each column.
+
+\subsection{TDF}
 The Tagged Data Format (TDF) is a data format developed by the CSIRO to store sensor data on SD storage.
 
-\section{Python}
-Python is a general use programming language. It is open source and there exist many libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. 
+\subsection{Python}
+Python is an open source, general use programming language. It is a mature language that has been used in production environments for a significant amount of time and as such, there are many third party libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. Two such libaries that were critical to the development of the framework are discussed in the proceeding subsections. 
 
 Python is a high level programming language that makes developing on it easy. For the most part, it has no significant performance compared to low level programming languages.
 
-\subsection{matplotlib}
-Matplotlib is a python library used for plotting data. It includes functionality to allow interactive plotting displays to be built 
+\subsubsection{matplotlib}
+Matplotlib is a python library used for plotting data. It includes functionality to allow interactive plotting displays to be built. An example matplotlib figure is shown in figure \ref{matplotlib}.
 
-\subsection{scikit-learn}
+
+
+\subsubsection{scikit-learn}
 
 \section{Supervised Machine Learning Classification algorithms}
 
@@ -129,5 +170,4 @@ For a set of input data with n dimensions, a n-1 dimension hyperplane will be fo
 \end{figure}
 
 Once trained, the SVM can accept input data and find on which side of the hyperplane the new input data lies. This allows the SVM to classify the data to a particular class. 
-\section{Cow eartags}
 
