@@ -61,7 +61,7 @@ For cattle, the CSIRO have developed a cattle eartag platform. A photo of the ea
 
 The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. 
 
-The WSN platform has been used for animal behaviour classification in the past as seen in section 2.1. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
+The WSN platform has been previously used for animal behaviour classification \cite{Guo2006}. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
 
 \section{Feed effeciency experiments}
 
@@ -102,25 +102,36 @@ JSON, or JavaScript Object Notation, is a popular data format used for web servi
 
 Libaries for JSON exist in most mainstream programming languages and decoding/encoding to or from JSON is fast.
 
-\subsection{HDF}
-The Hierarchal Data Format (HDF) is a data format that is commonly used for storing large amounts of scientific data that will be written once, read often but not updated often. Is it commonly used for storing data from scientific experiments. 
-
-HDF files contain groups of tables. Each table has column names but there is not data types associate with each column.
-
 \subsection{TDF}
-The Tagged Data Format (TDF) is a data format developed by the CSIRO to store sensor data on SD storage.
+The Tagged Data Format (TDF) is a data format developed by the CSIRO to compactly represent sensor data. It was created for sensor nodes to be able to send data so that any "back end" tools could parse the data without knowledge of the application that created the data. \cite{corke2010environmental}
+
+Data from the experiments performed by CSIRO was stored in the TDF format on SD storage for ease of use. While TDF works well for storing data it is not as good for data retrieval as it is not indexable. 
+
+\subsection{HDF}
+The Hierarchal Data Format (HDF) is a data format that is commonly used for storing large amounts of data that will be written once, read often but not updated often \cite{hdf2014hierarchical}. Is it commonly used for storing data from scientific experiments. 
+
+Importantly, CSIRO have previously developed technologies to allow HDF datastored to be accessed and queried over a JSON RESTful API. Converting sensor data to HDF so it is accessible over this interface would simplify much of the framework. 
 
 \subsection{Python}
-Python is an open source, general use programming language. It is a mature language that has been used in production environments for a significant amount of time and as such, there are many third party libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. Two such libaries that were critical to the development of the framework are discussed in the proceeding subsections. 
-
-Python is a high level programming language that makes developing on it easy. For the most part, it has no significant performance compared to low level programming languages.
+Python is a powerful general use programming language that features high level data structures and object orientated programming. \cite{van2003introduction} It is a mature language that has been used in production environments for a significant amount of time and as such, there are many third party libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. Two such libaries that were critical to the development of the framework are discussed in the proceeding subsections. 
 
 \subsubsection{matplotlib}
-Matplotlib is a python library used for plotting data. It includes functionality to allow interactive plotting displays to be built. An example matplotlib figure is shown in figure \ref{matplotlib}.
+Matplotlib is a python library used for plotting data. \cite{hunter2007matplotlib} It simplifies the process of plotting and visualising data. It also includes functionality to allow interactive plotting displays to be built. An example matplotlib figure is shown in figure \ref{matplotlib}.
 
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.75\textwidth]{images/matplotlib.png}
+\end{center}
+\caption{Example of a matplotlib plot}
+\label{matplotlib}
+\end{figure}
 
+\subsubsection{Scikit-learn}
 
-\subsubsection{scikit-learn}
+Scikit-learn is a library for Python that implements a large range of machine learning algorithms. The library focuses on providing machine learning capabilities at a high level to non-specialists. \cite{pedregosa2011scikit} As well as providing many machine learning algorithms, Scikit-learn also provides utility functions to simplify the algorithm design/validation process. 
+
+Scikit-learn was used for much of the classifier design and verification part of the framework.
 
 \section{Supervised Machine Learning Classification algorithms}
 

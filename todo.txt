@@ -1,0 +1,48 @@
+Thesis to do:
+
+Abstract:
+    - Write the abstract
+    - Poster would be a good place to start with it
+    
+Intro:
+
+2. Background:
+    - Add references for REST
+    - Add references for JSON
+
+    - DONE: Write about the rest of the technologies (eg: restful, python etc)
+    - DONE: Add a section about the CSIRO experiments with cattle videos
+    - DONE: Get some references for the classifier design process 
+
+3. Previous work (review.tex)
+    - Add some previous work about making classification algorithms
+    - Reduce the feed efficiency bias
+
+    - DONE: Split up section 3.3, it shouldn't be in this place
+
+4. Outline
+    - Fairly good but reference what was talked about in the background 
+      wrt classifier design
+
+    - The goals should be related to the framework, not the classifier. 
+
+5 Method:
+    - Flesh out a few of the headings
+    - Put in pictures of the annotation interface
+
+6 Discussion:
+    - Detail the procedure used for doing feed effeciency experiment
+        - Give results (eg accuracy)
+
+    - Write about what went well 
+    - Write about future improvements
+        - Web interface
+            - Eliminates package dependencies
+            - Eliminates platform dependencies
+            - More streamlined (don't need to connect to vpn)
+        
+        - Link to video
+            - Annotate while looking at the video
+    
+7 Conclusion:
+
