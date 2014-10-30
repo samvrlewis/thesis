@@ -1,15 +1,35 @@
 \chapter{Introduction}
 
-The phenotype of an animal is the set of characteristics of an individual animal that are a result of both its genetics and environment. For livestock in particular, phenotypic traits can be useful to characterise but hard and expensive to measure because, in order to do so, large amounts of data needs to be collected and analysed. 
+The phenotype of an animal is the set of characteristics of an individual animal that are a result of both its genetics and environment. The complete phenotype of animal gives insight to traits of that animal. For example, the activity level or feed efficiency of an individual animal is information contained in its phenotype. 
 
-One such phenotypic trait that is important to measure is feed effeciency in cattle. Conversion of feed to red meat in livestock is inherently inefficient in terms of feed intake to weight gain. For beef, current estimates of the ratio of feed intake to weight gain are between 5:1 and 10:1 \cite{Garnett2009}. Opportunities to improve this efficiency through genetic controls such as breed substitution, crossbreeding and genetic selection exist \cite{Hill2012} but data that shows how efficient individual animals are at converting feed to meat is essential in knowing which livestock to breed. This phenotype information can be used to extrapolate information about the genome which allows for the development of selection criteria for breeding objectives \cite{Pollak2012}.  
+For managing livestock towards economic or environmental goals, phenotypic traits can be useful to characterise in individual livestock. In selective breeding especially, phenotype information is critical in knowing which individual animals should be bread towards particular economic or environmental goals. \cite{Pollak2012} \cite{Arthur}
 
-However, this specific livestock phenotype information is difficult to empirically obtain and there is currently a lack of data available. Current recording techniques have focused mainly on animals in feedlots, where the animals are kept in pens and fed \textit{ad libitum} at regulated times \cite{Arthur2005}.
+However, phenotypic traits can be hard and expensive to measure because, in order to do so, large amounts of data needs to be collected and analysed. For the accurate measurement of phenotypic traits, long periods of observation are needed in the commercial environment in which the animal is kept. \cite{Falconer1996}
 
-This difficulty is compounded when considering livestock in pasture. Livestock in pasture feed directly from the pasture so it is not possible to regulate feeding times. Manually measuring feed intake of livestock in pasture is not practical as it would require significant manpower. Even in feedlots, where the process of measuring intake is easier because of the controlled way in which feeding is conducted, the cost of manpower is cited as the main reason for current lack of recording \cite{Barwick2010}. Furthermore, since heritability is both a property of the population and the environment \cite{Falconer1996}, measuring the traits of livestock in feedlots would not necessarily capture the traits of the same livestock in pasture. Attempts to capture this data through the use of chemical  markers to measure pasture intake in studies have had some success \cite{Barlow2009} \cite{Dove2006}; however, chemical markers have limitations and can only be used for short time periods. Therefore, to gain a robust understanding of the phenotype of individual animals, longer time periods of intake measurement are needed.
+In recent decades there has been advancement in the development of small, low power sensor devices. These devices have allowed scientists to create non-invasive devices that can be used to collect movement traces of free-ranging animals \cite{Anthony2012}. It has been suggested that this data could be used for automated livestock behaviour classification \cite{Guo2006} which would allow for measurement of phenotypic traits. 
 
-In recent decades there has been advancement in the development of small, low power sensor devices. These devices have allowed scientists to create non-invasive devices that can be used to collect movement traces of free-ranging animals \cite{Anthony2012}. It has been suggested that this data could be used for livestock behaviour classification \cite{Guo2006}; however developing a practical measure of intake for livestock in pasture currently remains a serious challenge \cite{Cottle2013}. Using these sensors as a method to automate the collection of phenotype information would be valuable to the livestock industry. 
+Using these sensors as a method to automate the collection of phenotype information would be valuable to the livestock industry, however only preliminary trials have been attempted in this area \cite{Guo2006}. 
 
-The Australian Commonwealth Scientific and Industrial Research Organisation (CSIRO) have previously developed devices that can non intrusively fit onto livestock and collect signal data including inertial measurement and Global Positioning System (GPS) measurement data \cite{Guo2006}. There is a potential for these devices to be used for classifying livestock phenotypes such as feed efficiency.
+There is potential for techniques such as machine learning, signal processing or patten recognition to be used to develop such a phenotypic trait classifier \cite{Guo2006} and there is evidence to suggest that such a classifier would be able to run on a low-powered sensor device \cite{predd2007distributed} \cite{stoeltingmachine}. However, designing a classification algorithm is a complex process that requires collection, curation and annotation of large amounts of data as well as design and verification of the algorithm. 
 
-Developing a system that made us of these devices and could measure the phenotypic traits of any animal would be very advantageous to the livestock industry. The aim of this thesis is therefore to develop a framework to facilitate the process of designing classifiers that can measure livestock phenotype traits. In developing a framework, the example of measuring cattle feed effeciency will be used to contextualise the work, however the frameworks will be built in such a generic way that they could be used for measuring any livestock phenotyping trait. 
+This theis, titled, \textit{'Time-series Sensor Data Classifier Development Framework for Animal Phenotyping'} focused on simplifying the complex procedure of developing a classifier for phenotypic traits by developing a general use framework that would allow for the rapid development of automated, real-time phenotypic trait classifiers that could be implemented on a low powered sensor device. 
+
+Although the framework was to be developed for any phenotypic trait measurement task, the development of the framework was driven and contextualised by the example phenotypic trait measurement task of cattle feed efficiency.
+
+The structure of this thesis is broken down into the following sections:
+
+\begin{itemize}
+
+\item Chapter 2 contains relevant background and theory. Background is given into the task of cattle feed effeciency as well as classification algorithm design. Additionally, information about the work already performed on the project is shown. Some theory is also given into technologies used in the development of the framework. 
+
+\item Chapter 3 reviews related previous work and a discussion of the impact of that work to this thesis.
+
+\item Chapter 4 builds off the impact of the previous work to give a project outline. The goals of the thesis are formally stated in this section.
+
+\item Chapter 5 details the method of creating the framework and gives insight to how each part of the framework fits together. 
+
+\item Chapter 6 critically analyses the final version of the framework, and discusses the use of the framework for the cow feed effeciency analysis task. Future directions of the framework in general are also discussed.
+
+\item Chapter 7 forms conclusions from the above sections.
+
+\end{itemize}
