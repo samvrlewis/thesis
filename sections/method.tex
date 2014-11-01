@@ -1,4 +1,4 @@
-\chapter{Methodology, procedure, design, etc.}
+\chapter{Framework design procedure}
 
 This section outlines the methodology and design decisions in designing a complete framework that would allow for the design of a chew classifier using raw signal data from experiments where cattle were filmed while eartag signal data was recorded. This section is broken down into the following parts.
 
@@ -212,7 +212,7 @@ A annotated version of the finished interface is shown in figure \ref{annotation
 \leavevmode
 \includegraphics[width=0.9\textwidth]{images/annotation_interface_annotated.png}
 \end{center}
-\caption{Annotation interface design}
+\caption{Finished version of the annotation interface}
 \label{annotationinterface}
 \end{figure}
 
@@ -323,9 +323,50 @@ The function can then randomly split X and Y into a training and testing set. Th
 This splitting of the annotated set was performed after the extraction of the features from the data but before the features were scaled. This is so the scaler would be created only from the training data so that it is not biased by data that was not used to train it. 
 
 \subsection{Confidence level estimation}
-As it is possible to seed the random number generator the \texttt{train\_test\_split} method uses to split the data set, this feature was used to estimate a confidence level of a classifier. 
+As it is possible to seed the random number generator the \texttt{train\_test\_split} method uses to split the data set, this feature was used to estimate a confidence level of a classifier.
 
 By using a number of different seeds for the \texttt{train\_test\_split} method, classifiers would be trained and tested on different parts of the data. Doing this enough times allowed for an estimation of the range of accuracy of the classifier. This helped to ensure the classifier was robust. 
+
+\subsection{Testing on non annotated data}
+The previous methods for validation of the classifier tested on data that was already annotated. When designing a classifier it would still be valuable to validate its performance on sections of non annotated data. It would also be valuable to validate classifiers across data sets in the same way as they would be used when running on a device in the field. 
+
+The basic premise of this method of testing can be thought of as having a window of a fixed time period that is moved across the data. At each position of the window, a new classification is made. 
+
+This method of validation is implemented in \texttt{predictor.py}. The following code snippet demonstrates the basic block of the code.
+
+\begin{verbatim}
+while start < end:
+    #get the end of the current window
+    end_window = start + window_length
+    
+    #extract the window data from the data
+    period_data = extract_from_data(data[0], start, end_window)
+    
+    #get the required features
+    features = datatools.get_data_features([period_data], sensors, feature_fns)
+    
+    #get the prediction result from the features
+    prediction = get_prediction(features)[0]
+    pos_preds += prediction
+    predictions.append((start, end_window, prediction))
+        
+    start += us_step
+\end{verbatim}
+
+This code moves the window of \texttt{window\_length} along at increments of \texttt{us\_step}, making a prediction using the data in the window at each step. The list of predictions is then saved and can be displayed in the annotation interface by choosing a prediction file in the launcher part of the interface. An example output when loading in a prediction file is shown in figure \ref{interfaceprediction}.
+
+In this case, as before the red and blue highlighted sections represent the chew or not chew events as before. The black line is the classification at each position of the window, with a high value representing a chew event and a low value representing a non chew event. The value of classification at each point is the classification for the preceeding window so the classifier value is approximately one window length behind the manual annotation, which explains the mismatch.
+
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.9\textwidth]{images/annotation_interface_predictions.png}
+\end{center}
+\caption{Annotation interface with predictions}
+\label{interfaceprediction}
+\end{figure}
+
+%aeropress espresso
 
 %\subsection{Feature scoring (maybe this is better in the section before though)}
 

@@ -27,8 +27,11 @@ Intro:
     - The goals should be related to the framework, not the classifier. 
 
 5 Method:
+    - Confusion matrix
+
     - Flesh out a few of the headings
     - Put in pictures of the annotation interface
+    
 
 6 Discussion:
     - Detail the procedure used for doing feed effeciency experiment

@@ -1,11 +1,61 @@
 \chapter{Discussion}
-- Analysis of the importance of different signals
 
-- Accuracy of the system 
+\section{Assesment of Completed framework}
 
-- Something about how testing it with tagged data vs non-tagged data
+The performance, strength and weaknesses of each of the components of the completed framework are examined in this section. Overall, the framework performed well however there were some minor usability issues.
 
-\section{Future Work}
+\subsection{Data Curation}
 
-- Improvement in the types of features
-- Web based version
+The data curation function of the framework converts binary TDF data into structured HDF files. Data from any type of sensor can be read using the data curation part of the framework as long as the data is in the TDF format. 
+
+Once the data is in the HDF format it can be accessed through a JSON RESTful interface from any external application. This part of the framework could be used for any purpose where TDF formatted sensor data is needed to be universally accessible. 
+
+Overall, the data curation part of the framework was sucessful in providing a script that could create a HDF file format for any TDF formatted sensor data. 
+
+\subsection{Annotation Interface}
+
+The annotation interface allows a user without technical expertise to annotate any data that can be accessed over the RESTful interface. If there is audio data provided it allows the user to playback parts of the audio to assist in the manual annotation process.
+
+The launcher allows the user to quickly choose the sensor data to annotate while not needing to know anything about the underlying RESTful system or the way in which the data is retrieved or stored or submitted. Annotations were sent over the RESTful system and then stored alongside the sensor data. This allowed easy retrieval of annotated data and would allow simple access to any third party applications needing access to the annotation metadata with the sensor data. 
+
+Loading prediction files is another feature of the annotation interface. After developing a classifier and running it over a time period, a prediction file can be saved and then be plotted over the data. This is useful for qualitatively determining the accuracy of a classifier. 
+
+One arguable weakness of the annotation interface is that the classification categories are hardcoded. It would be simple to add a mechanism for the user to type in the classification categories wanted but this could cause inconsistency in the category names. Presently only a single line of code needs to be modified to change the categories. 
+
+Another weakness is the responsiveness of the interface. If a lot of data is being annotated then the interface is slower to respond to user input. Additionally, it can take some time to access a large amount of data from the annotation interface. The code for the interface is largely unoptimised so the responsiveness could be improved by some profiling of the code. The speed issues when downloading large amounts of data is largely because of the speed of the RESTful interface. At the time of writing this takes 10 minutes to download 2 minutes of data. However, the backend of this system will be updated in the future which will help with this. 
+
+The annotation interface worked well overall. There were some issues with speed, responsiveness and the fact that categories were hardcoded in however these are minor or expected to be fixed in the future. 
+
+\subsection{Classifier Design}
+
+The process of developing a classifier from annotated data was made to be as streamlined and simple as possible. It is simple to access the annotated data over the RESTful interface to use in training a classifier. 
+
+The modular design of the feature function systems allows feature sets to be swapped in and out easily. This allows the performance of the classifier with different features to be found quickly and easily which is of great benefit when prototyping classifiers. 
+
+The pipeline design allows classifiers and scalers to be persisted as one structure which allows new data to be classified without needing extra overhead to extract the classifier or scaler from the training data. 
+
+The classifier design system allows quick and simple design of a classifier using previously annotated data. It is simple to swap features in and out and easy to use any machine learning algorithm. 
+
+\subsection{Classifier Verification}
+
+The performance of the classifier was able to be verified by two different processes. 
+
+The first process involved using part of the annotated data to test the classifier. This allowed a confusion matrix and an accuracy number to be found. By splitting the annotated data so that different variations were used for both training and testing, a confidence interval was able to be found for a classifier. 
+
+The second process used a moving window to classify the complete data set. Results could then be seen visually in the interface. This was a less precise process than the first process but mirrored what would happen in the field more closely. This could be improved upon by finding a metric for this method to vertify the performance more exactly. 
+
+Though it was hard to use the verification process to get the performance of a classifier that would run in the field, the verification process still allowed the performance different classifiers to be analysed. In this way, the effectiveness of using different models and features could be found. 
+
+\section{Results for use with feed effeciency trial}
+
+To test the effectiveness of the framework, the framework was used to create a chew classifier for the cattle feed efficiency problem described in section 2.1. 
+
+This section details this procedure and lists the results of doing so. 
+
+
+\section{Future Directions}
+
+There are some suggested future directions for this work concerning the annotation interface and classifier design and verification process. 
+
+
+
