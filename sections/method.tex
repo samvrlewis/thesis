@@ -166,6 +166,24 @@ The script works by formatting the annotation data (the fields for the table as 
 
 \subsection{Annotation interface}
 
+
+\subsubsection{Annotation interface launcher}
+
+To streamline the process of selecting the data to be annotated in the annotation interface, a launcher was developed using the Graphical User Interface (GUI) library Wx \cite{rappin2006wxpython}. The launcher GUI is shown below in figure \ref{launcherpic}. It allows the user to choose any combination of sensors from any avaliable sensor node and deployment. 
+
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.5\textwidth]{images/annotationlauncher.png}
+\end{center}
+\caption{Annotation interface launcher GUI}
+\label{launcherpic}
+\end{figure}
+
+This launcher dynamically loaded all sections from the RESTful service. It also allows the user the choice of displaying or not displaying the previously annotated sections of the selected data. 
+
+\subsubsection{Annotation interface application}
+
 In designing the interface for annotation it was important to allow a view of each of the different signals captured. It was also important to do this modularly so that the interface could be reused as a tool to annotate different sorts of data.
 
 Figure \ref{annotation_interface_design} shows the initial design of the interface. The interface shows the signal data from a number of different sensors. It allows a user to select a period of signal data (the red box shows the currently selected period), choose an annotation category (in this case, either 'chew' or 'not chew') and then submit the annotation. In addition, the interface also shows the time period currently selected and allows a user to play the audio from the selected period. 
@@ -185,14 +203,18 @@ The inbuilt matplotlib SpanSelector widget was used in the interface so that a v
 
 The interface also contains functionality to play a selected period of audio. This was enabled by the \texttt{scikits.audiolab} python library \cite{Cournapeau}. Because of the limitations of this library and the way that it interfaces with the Mac Core Audio library, this only allowed for audio to be played at the standard sampling rate of 44.1 kHz. Fortunately, the audio recorded as part of the experiments that were used was at approximately 22 kHz so it was possible to oversample the audio at double the rate in order to play it. In this case, as the audio is only used to find the start and end of an annotation period, the precise playback frequency is not of great importance. 
 
-The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the currently selected time period.  
-A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
+The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the currently selected time period. A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
 
-\todo{not here but need somewhere explaining what the videos look like}
+A annotated version of the finished interface is shown in figure \ref{annotationinterface}. This image shows a previously annotated one minute section of data. The data is from three different sensors - an acceloremeter, a magnetometer and a microphone. The sections of the data highlighted red indicate that that section of data was annotated as a chew event while the blue sections indicate that that section of data was annotated as an other event. 
 
-\todo{add code to appendix and reference}
-
-- annotations stored in the h5 dataset
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.9\textwidth]{images/annotation_interface_annotated.png}
+\end{center}
+\caption{Annotation interface design}
+\label{annotationinterface}
+\end{figure}
 
 \subsection{Annotation set building}
 
@@ -210,21 +232,9 @@ The design of the classifier comprised of two parts; deciding on an algorithm to
 
 In choosing an algorithm to use to classify the signal data into chew or not chew categories, an investigation was performed into different types of algorithms and paradigms. The two main paradigms that were examined were algorithms that followed a simple thresholding/signal processing approach and supervised machine learning algorithms. 
 
-A preliminary investigation was done in writing a simple classifier. This involved examination of the annotated data for trends in the data for the different classification categories.  
+The machine learning approach was found to be better in its ability to take full advantage of the high dimensionality of the signal data. A machine learning algorithm is able to take advantage of trends and patterns in the data that a human may not be able to directly identify. This in contrast to signal processing approach where trends in the data need to be manually found. The framework was then written to be able to use any machine learning algorithm. The paradigm for most machine learning algorithms is similar as detailed in section \label{classifierframework}.
 
-The machine learning approach was found to be better in its ability to take full advantage of the high dimensionality of the signal data. A machine learning algorithm is able to take advantage of trends and patterns in the data that a human may not be able to directly identify. This in contrast to signal processing approach where trends in the data need to be manually found.
-
-Once the machine learning approach was decided upon, a range of different machine learning algorithms were considered for the classifier. Table \ref{machine larning table} shows the algorithms and lists basic properties of those algorithms. 
-
-SVM - easy to use, fast to converge, easy to use on embedded systems, something about how to avoids over fitting
-
-ANN - doesn't always converge, can use more complicated maths than the linear equations in SVM (?)
-
-Random Forest - 
-
-Nearest Neighbour - 
-
-The SVM algorithm was chosen for the classifier. As well as being fast to converge to a result, the SVM algorithm has also be extensively studied and used in practice so there are many free and open source software libraries that can be used to implement the algorithm. In addition, the SVM algorithm was also appealing as it has shown to be feasible to run on embedded and resource constrained hardware. 
+For prototyping, the SVM algorithm was chosen for the classifier. As well as being fast to converge to a result, the SVM algorithm has also be extensively studied and used in practice so there are many free and open source software libraries that can be used to implement the algorithm. In addition, the SVM algorithm was also appealing as it has shown to be feasible to run on embedded and resource constrained hardware. 
 
 \subsection{Selection of classifier prototyping software}
 
@@ -237,6 +247,7 @@ Writing the classifier training and validation parts of the framework in python 
 The scikits.learn package was used for most of the machine learning algorithm design process. As well as having a full implementation of the SVM algorithm, it also includes numerous other useful utilities for such tasks as normalisation and training/test set partitioning. 
 
 \subsection{Classifier framework}
+\label{classifierframework}
 
 The process to build a robust classifier consisted of:
 
@@ -254,24 +265,57 @@ The process to build a robust classifier consisted of:
 \item Validating and assessing the accuracy of the classifier using the validation set
 \end{enumerate}
 
-This process is summarised below in figure \ref{classiferframework}.
+This process is discussed in more detail below. 
 
 \subsection{Selection of features}
+In order to design a robust algorithm that could classify signal data into categories, features of the data need to first be extracted from the data. Features can be the result of running simple functions over a small dataset, such as a min, max or mean operation but can also be more complicated functions such as a Fourier transform. 
 
-In order to design a robust algorithm that could classify signal data into categories, features of the data need to first be extracted from the data. Features can be the result of running simple functions over a small dataset, such as a min, max or mean operation but 
+The part of the framework used for training a classifier, contained in the file \texttt{train.py}, was written modularly to allow for any features to be used. This is shown in the code snippet below. Any function name name be put into the list of feature function. The training code will use all the function in this list to extract the features from the annotated data. 
 
-choice of software package to use too?
+\begin{verbatim}
+time_invariant = [np.mean, np.std, np.min, np.max, ff.half_window_difference]
+\end{verbatim}
 
-matlab - not free but easy to prototype
-python - os/workflow already in python/somewhat easy to prototype/good libraries avaliable
-C - what an algorithm would eventually implemented in on device, hard to prototype and quickly change things
+These methods all take data in a list or vector structure and perform an operation on the data, giving back a single number. However, the framework allows for methods which can take data in a list or vector structure and return data in a list or vector structure. This could be useful for more advanced features. 
+
+\subsection{Feature normalisation and scaling}
+In order for the features fed to a machine learning classifier were of the same average magnitude and deviation, the features were first normlalised and scaled. The Scikits-learn feature normalisation functionality was used for this. This allowed a scaler object to be saved, so that the test data could be scaled and normalised in the same way that the training data was. 
+
+\subsection{Classifier training}
+Once the features were extracted from the training data they were used to train a classifier. Using Scikits-learn, this was as simple as calling the \texttt{fit} method on a classifier model. This function fits the model to the data. 
+
+The classifier and scaler could then be saved as pipeline. The pipeline is a feature of Scikits-learn that allows method calls to be put together into a struture. This structure can be saved and new data can be passed to it. 
+
+The following code snippet shows the process of training a model. In this case a SVM is being trained but any classifier could be trained in the same way.
+
+\begin{verbatim}
+def train_svm(positive_data, negative_data):
+    pos_features = datatools.get_data_features(positive_data, sensors, feature_fns)
+    neg_features = datatools.get_data_features(negative_data, sensors, feature_fns)
+    
+    X = np.array(pos_features + neg_features)
+    y = np.array([1]*len(pos_features) + [0]*len(neg_features))
+    
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
+    
+    scaler = preprocessing.StandardScaler().fit(X_train)
+    X_train = scaler.transform(X_train)
+    
+    clf = svm.SVC(class_weight='auto')
+    clf.fit(X_train, y_train) 
+    
+    pipeline = Pipeline([('scaler', scaler), ('svc', clf)])
+\end{verbatim}
+
+
+This code first extracts features from the annotated data using the \texttt{feature\_fns} list previously described. An \textit{X} matrix is then formed which contains columns of features from each event. The \textit{y} vector contains the corresponding classification for each event. In this case, the positive event data is labelled with \texttt{1} and the negative event data is labelled with \texttt{0}.
+
+The set is then split into a training and test set, scaled and then the data is used to fit a SVM model. The SVM model as well as the scaler can then be saved into a pipeline for use with new data later.  
 
 \section{Classifier evaluation}
-
 In order to properly evaluate the performance of a potential classifier, a framework to evaluate the classifier needed to be built. This classifier would be tested on previously annotated datasets that were not used in the classifier design/training phases. 
 
 \subsection{Partitioning the annotation set}
-
 To partition the previous annotated data set into both a set to train the classifier and a set to test the classifier, the \texttt{train\_test\_split} function was used from the \texttt{scikits.learn} toolkit. This function takes a X matrix containing columns of features and a Y vector containing the corresponding annotation for each column. 
 
 The function can then randomly split X and Y into a training and testing set. This ensures that there is diversity across both sets. The size of each set can also be controlled by passing a parameter to the function. 
@@ -283,7 +327,7 @@ As it is possible to seed the random number generator the \texttt{train\_test\_s
 
 By using a number of different seeds for the \texttt{train\_test\_split} method, classifiers would be trained and tested on different parts of the data. Doing this enough times allowed for an estimation of the range of accuracy of the classifier. This helped to ensure the classifier was robust. 
 
-\subsection{Feature scoring (maybe this is better in the section before though)}
+%\subsection{Feature scoring (maybe this is better in the section before though)}
 
 
 %% maybe useful stuff:
