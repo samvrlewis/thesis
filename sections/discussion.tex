@@ -48,9 +48,56 @@ Though it was hard to use the verification process to get the performance of a c
 
 \section{Results for use with feed effeciency trial}
 
-To test the effectiveness of the framework, the framework was used to create a chew classifier for the cattle feed efficiency problem described in section 2.1. 
+To test the effectiveness of the framework and to act as a proof of concept, the framework was used to create a chew classifier for the cattle feed efficiency problem described in section 2.1. A small dataset was annotated and a classifier was created using this annotated data. 
 
 This section details this procedure and lists the results of doing so. 
+
+\subsection{Data Curation}
+
+Data was converted to HDF using the \texttt{sd2hdf.py} script. This took approximately one hour per one gigabyte of TDF formatted data on a 2012 series MacBook Air running a 1.7 GHz Intel i5. Once the HDF files were generated, they were placed on a CSIRO server and were accessible over a RESTful interface. 
+
+\subsection{Data Annotation}
+
+Across the data from the feed effiency experiments discussed in section \ref{feedef}, 1133 different events were annotated. Because there is more variability in non chew events than chew events (because a non chew event encompasses all other behaviour), more non chew events were recorded than chew events. 
+
+Annotation was performed by observing the video files, finding times when the cattle were exhibiting a particular behaviour and then using the annotation interface to annotate that period of time. For annotating chew events, the audio was used to precisely locate the start and end time of the events. For consistency, annotations were attempted to be kept to approximately 350ms, however the exact length was not critical as it could be changed with post processing. 
+
+For variability, events were chosen across a number of different times. This helped to ensure that the classifier would be robust. 
+
+\subsection{Classifier Design}
+
+The annotated data was used to train a SVM model. A number of different features were trialled, these are listed below with explanation. The sensors that were used for the classifier were the acceloremeter, magnetometer and audio. Trials were attempted with the pressure and temperature sensor but this sensor did not increase the accuracy of any classifier. 
+
+\begin{itemize}
+\item Standard deviation - the standard deviation across a window of sensor data
+\item Mean - the mean value across a window of sensor data
+\item Min - the minimum value across a window of sensor data
+\item Max - the maximum value across a window of sensor data
+\item Half window difference - the difference in mean between the first half of a window and the second half
+\item Max FFT power - the frequency of maximum power in a FFT of a window of sensor data
+\item Average successive difference - the average difference between successive samples
+\end{itemize}
+
+For consistency, the window of all events was set to 350ms as this was the average length of a chew event. Events were fit to this length by finding the mid point of an event and then setting the start point of the event 175 ms before it and the end point 175 ms after it. 
+
+\subsection{Classifier Results}
+
+On the complete data set the classifier performed well in initial testing. The features that had the greatest effect on the performance of the classifier were the simple statistical features, that is the standard deviation, mean, min and max. With testing on the annotated dataset this gave a confidence interval of 83 - 90\% accuracy. This accuracy was found by splitting the annotation set in different ways and testing with one part of the set and testing with the other, as described in the method section. 
+
+However, the accuracy of the classified suffered when trialled on new sections of data using the moving window method of testing. Qualitatively, it seemed as though the classifier classified most periods of movement as a chew event and idle periods as non chew events. This most likely is because of the large amounts of variation in non chew events. To capture this variation better, more non chew events would need to be annotated.
+
+To confirm this, a classifier was built and tested on a small amount of data. This data was a 2 minute period of data from 01:45 to 01:47 on the 4th of December 2013. All events in this time period were annotated and a new classifier was trained using this data. Testing using this classifier gave a confidence interval of 89 - 94\% accuracy. The rolling window method also had much better accuracy with this method with most chew events being classified correct through the entire event. Figure \ref{classifycorrect} shows this over a few successive events. 
+
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.9\textwidth]{images/annotation_interface_predictions.png}
+\end{center}
+\caption{Predictions using the classifier over a short time period}
+\label{classifycorrect}
+\end{figure}
+
+This shows that the framework works well when enough data has been annotated. More annotations would be needed to have the same levels of accuracy across the whole data set because the large amounts of variation between individual events. As a proof of concept, the classifier designed using the short time period worked well. 
 
 
 \section{Future Directions}
