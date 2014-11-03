@@ -42,7 +42,7 @@ Each individual sensor node was allocated its own HDF file, and each HDF file ha
 
 The elements marked with a \texttt{+} are tables while the elements marked with \texttt{-} are groups, which assist in organising the structure. Typically, for the experiments that took place there were five sensor tables; pressure/temperature, audio, accelerometer, magnetometer and a reset counter. 
 
-The structure of a sensor table with N measurements/sensors is presented below in figure \ref{HDF table structure}. Each table had rows of sensor readings. For example, the audio sensor had two columns, a time column and a sample column. On the other hand, the accelerometer table had four columns; a time column and a column for each of the x, y and z accelormeter readings. \\
+The structure of a sensor table with N measurements/sensors is presented below in figure \ref{HDF table structure}. Each table had rows of sensor readings. For example, the audio sensor had two columns, a time column and a sample column. On the other hand, the accelerometer table had four columns; a time column and a column for each of the x, y and z accelerometer readings. \\
 
 \begin{verbbox}
 Time | Sensor1 Measurement | .. | Sensor N Measurement 
@@ -68,7 +68,7 @@ The RESTful interface made it possible to easily extract JSON formatted sensor d
 
 \url{http://livestock.sensornets.csiro.au/data/v1/network/bigridge4/platform/eartag732/sensor/LSM303DLHC\_MAG/observations?\&limit=22000\&start=2013-12-02T23:15:00\&end=2013-12-02T23:15:01} 
 
-This request will get a JSON response that contains LSM303DLHC\_MAG sensor data (which is magnometer sensor data) from an eartag named eartag732 for the Big Ridge 4 experiment between the start and end dates listed in the query. 
+This request will get a JSON response that contains LSM303DLHC\_MAG sensor data (which is magnetometer sensor data) from an eartag named eartag732 for the Big Ridge 4 experiment between the start and end dates listed in the query. 
 
 The structure of the returned JSON is shown below in figure \ref{JSON structure}. For brevity, only the first two observations in the JSON file are shown. Each successive observation is of the form of the two shown. 
 
@@ -100,15 +100,15 @@ The structure of the returned JSON is shown below in figure \ref{JSON structure}
   \caption{JSON structure}
 \end{figure}
 
-The important part of the returned JSON is the data in the \texttt{observations} field. This field is a list of dictionaries where each dictionary contains measurement from the sensor along with the corresponding time that measurements were taken. In this case, because the magnometer used is triaxial, there are three measurements; \texttt{magx}, \texttt{magy}, \texttt{magz}. The time of sample is in the \texttt{utc} field which is stored as a UTC time. For other sensors, such as the audio sensor, there are not as many measurements per data point. 
+The important part of the returned JSON is the data in the \texttt{observations} field. This field is a list of dictionaries where each dictionary contains measurement from the sensor along with the corresponding time that measurements were taken. In this case, because the magnetometer used is triaxial, there are three measurements; \texttt{magx}, \texttt{magy}, \texttt{magz}. The time of sample is in the \texttt{utc} field which is stored as a UTC time. For other sensors, such as the audio sensor, there are not as many measurements per data point. 
 
 \subsection{Data coverage plotting}
 
 In the two experiments that were performed, there were some reliability issues for the sensor nodes that were used. In some cases, some sensor nodes stopped working completely and needed to be replaced while in other cases certain sensors on the sensor nodes did not record data for some periods of time. In addition to this, video was only recorded for a very small amount of time compared to the amount of sensor node data that was recorded. 
 
-In order to develop a training set based on the recorded data it was neccesary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through the signal data. The script found the time difference between adjacent data samples and if the difference was larger than a threshold recorded that period of time between samples as a gap. This threshold was different for each signal as each signal had different sampling rates. 
+In order to develop a training set based on the recorded data it was necessary to find time periods where there was complete sensor data coverage as well as corresponding video coverage. To do this a python script was written that iterated through the signal data. The script found the time difference between adjacent data samples and if the difference was larger than a threshold recorded that period of time between samples as a gap. This threshold was different for each signal as each signal had different sampling rates. 
 
-After the gaps were found then it was possible to plot the coverage of different signal nodes over the experiment time frame. An example of this is shown in figure \ref{coverage_plot}. The solid line in the figure represents continous signal coverage (no gaps in the data) whereas a gap in the line signifies there are no samples captured for that time period. 
+After the gaps were found then it was possible to plot the coverage of different signal nodes over the experiment time frame. An example of this is shown in figure \ref{coverage_plot}. The solid line in the figure represents continuous signal coverage (no gaps in the data) whereas a gap in the line signifies there are no samples captured for that time period. 
 
 \begin{figure}[ht!]
 \begin{center}
@@ -146,9 +146,9 @@ The purpose of each field and the format that the data is stored in is discussed
 
 \item Event: A string of what the event was, for example 'chew' or `not chew'.
 
-\item Duation: The length of the event as an integer in microsecond.
+\item Duration: The length of the event as an integer in microsecond.
 
-\item Annotator: Describes the annotation method used to make the annotation. This could either be a person's name in the case of a manual annotation or, in the case of an automated classifier, the type of automated classifer that made the annotation.
+\item Annotator: Describes the annotation method used to make the annotation. This could either be a person's name in the case of a manual annotation or, in the case of an automated classifier, the type of automated classifier that made the annotation.
 
 \item Confidence: The confidence level that the annotator had when annotating as an integer percentage
 
@@ -169,7 +169,7 @@ The script works by formatting the annotation data (the fields for the table as 
 
 \subsubsection{Annotation interface launcher}
 
-To streamline the process of selecting the data to be annotated in the annotation interface, a launcher was developed using the Graphical User Interface (GUI) library Wx \cite{rappin2006wxpython}. The launcher GUI is shown below in figure \ref{launcherpic}. It allows the user to choose any combination of sensors from any avaliable sensor node and deployment. 
+To streamline the process of selecting the data to be annotated in the annotation interface, a launcher was developed using the Graphical User Interface (GUI) library Wx \cite{rappin2006wxpython}. The launcher GUI is shown below in figure \ref{launcherpic}. It allows the user to choose any combination of sensors from any available sensor node and deployment. 
 
 \begin{figure}[ht!]
 \begin{center}
@@ -205,7 +205,7 @@ The interface also contains functionality to play a selected period of audio. Th
 
 The audio playing functionality is implemented in the interface as a play button that plays the audio associated with the currently selected time period. A user of the annotation interface is then able to select a node, a time period and a range of sensors to be displayed in the interface. Events can then be found within that time period and the audio can be used to precisely find the start and end times. 
 
-A annotated version of the finished interface is shown in figure \ref{annotationinterface}. This image shows a previously annotated one minute section of data. The data is from three different sensors - an acceloremeter, a magnetometer and a microphone. The sections of the data highlighted red indicate that that section of data was annotated as a chew event while the blue sections indicate that that section of data was annotated as an other event. 
+A annotated version of the finished interface is shown in figure \ref{annotationinterface}. This image shows a previously annotated one minute section of data. The data is from three different sensors - an accelerometer, a magnetometer and a microphone. The sections of the data highlighted red indicate that that section of data was annotated as a chew event while the blue sections indicate that that section of data was annotated as an other event. 
 
 \begin{figure}[ht!]
 \begin{center}
@@ -226,11 +226,11 @@ To find time periods to classify, the videos of the experiment were used. These 
 
 \section{Classifier design}
 
-The design of the classifier comprised of two parts; deciding on an algorithm to use and then investigating the best way to design or train it and then implementing methods to validate and test the accuracy of the classifer.  
+The design of the classifier comprised of two parts; deciding on an algorithm to use and then investigating the best way to design or train it and then implementing methods to validate and test the accuracy of the classifier.  
 
 \subsection{Selection of algorithm}
 
-In choosing an algorithm to use to classify the signal data into chew or not chew categories, an investigation was performed into different types of algorithms and paradigms. The two main paradigms that were examined were algorithms that followed a simple thresholding/signal processing approach and supervised machine learning algorithms. 
+In choosing an algorithm to use to classify the signal data into chew or not chew categories, an investigation was performed into different types of algorithms and paradigms. The two main paradigms that were examined were algorithms that followed a simple thresholding or signal processing approach and supervised machine learning algorithms. 
 
 The machine learning approach was found to be better in its ability to take full advantage of the high dimensionality of the signal data. A machine learning algorithm is able to take advantage of trends and patterns in the data that a human may not be able to directly identify. This in contrast to signal processing approach where trends in the data need to be manually found. The framework was then written to be able to use any machine learning algorithm. The paradigm for most machine learning algorithms is similar as detailed in section \label{classifierframework}.
 
@@ -244,7 +244,7 @@ Python also has the advantage of being a mature development environment, particu
 
 Writing the classifier training and validation parts of the framework in python also enabled the framework to fit together better, allowing for a complete work flow in python. This not only minimises the need for extra development software but also simplifies the process of writing extensions to the framework in the future. 
 
-The scikits.learn package was used for most of the machine learning algorithm design process. As well as having a full implementation of the SVM algorithm, it also includes numerous other useful utilities for such tasks as normalisation and training/test set partitioning. 
+The Scikits-learn package was used for most of the machine learning algorithm design process. As well as having a full implementation of the SVM algorithm, it also includes numerous other useful utilities for such tasks as normalisation and training and test set partitioning. 
 
 \subsection{Classifier framework}
 \label{classifierframework}
@@ -279,12 +279,12 @@ time_invariant = [np.mean, np.std, np.min, np.max, ff.half_window_difference]
 These methods all take data in a list or vector structure and perform an operation on the data, giving back a single number. However, the framework allows for methods which can take data in a list or vector structure and return data in a list or vector structure. This could be useful for more advanced features. 
 
 \subsection{Feature normalisation and scaling}
-In order for the features fed to a machine learning classifier were of the same average magnitude and deviation, the features were first normlalised and scaled. The Scikits-learn feature normalisation functionality was used for this. This allowed a scaler object to be saved, so that the test data could be scaled and normalised in the same way that the training data was. 
+In order for the features fed to a machine learning classifier were of the same average magnitude and deviation, the features were first normalised and scaled. The Scikits-learn feature normalisation functionality was used for this. This allowed a scaler object to be saved, so that the test data could be scaled and normalised in the same way that the training data was. 
 
 \subsection{Classifier training}
 Once the features were extracted from the training data they were used to train a classifier. Using Scikits-learn, this was as simple as calling the \texttt{fit} method on a classifier model. This function fits the model to the data. 
 
-The classifier and scaler could then be saved as pipeline. The pipeline is a feature of Scikits-learn that allows method calls to be put together into a struture. This structure can be saved and new data can be passed to it. 
+The classifier and scaler could then be saved as pipeline. The pipeline is a feature of Scikits-learn that allows method calls to be put together into a structure. This structure can be saved and new data can be passed to it. 
 
 The following code snippet shows the process of training a model. In this case a SVM is being trained but any classifier could be trained in the same way.
 
@@ -313,7 +313,7 @@ This code first extracts features from the annotated data using the \texttt{feat
 The set is then split into a training and test set, scaled and then the data is used to fit a SVM model. The SVM model as well as the scaler can then be saved into a pipeline for use with new data later.  
 
 \section{Classifier evaluation}
-In order to properly evaluate the performance of a potential classifier, a framework to evaluate the classifier needed to be built. This classifier would be tested on previously annotated datasets that were not used in the classifier design/training phases. 
+In order to properly evaluate the performance of a potential classifier, a framework to evaluate the classifier needed to be built. This classifier would be tested on previously annotated datasets that were not used in the classifier design and training phases. 
 
 \subsection{Partitioning the annotation set}
 To partition the previous annotated data set into both a set to train the classifier and a set to test the classifier, the \texttt{train\_test\_split} function was used from the \texttt{scikits.learn} toolkit. This function takes a X matrix containing columns of features and a Y vector containing the corresponding annotation for each column. 
@@ -355,7 +355,7 @@ while start < end:
 
 This code moves the window of \texttt{window\_length} along at increments of \texttt{us\_step}, making a prediction using the data in the window at each step. The list of predictions is then saved and can be displayed in the annotation interface by choosing a prediction file in the launcher part of the interface. An example output when loading in a prediction file is shown in figure \ref{interfaceprediction}.
 
-In this case, as before the red and blue highlighted sections represent the chew or not chew events as before. The black line is the classification at each position of the window, with a high value representing a chew event and a low value representing a non chew event. The value of classification at each point is the classification for the preceeding window so the classifier value is approximately one window length behind the manual annotation, which explains the mismatch.
+In this case, as before the red and blue highlighted sections represent the chew or not chew events as before. The black line is the classification at each position of the window, with a high value representing a chew event and a low value representing a non chew event. The value of classification at each point is the classification for the preceding window so the classifier value is approximately one window length behind the manual annotation, which explains the mismatch.
 
 \begin{figure}[ht!]
 \begin{center}
@@ -366,7 +366,6 @@ In this case, as before the red and blue highlighted sections represent the chew
 \label{interfaceprediction}
 \end{figure}
 
-%aeropress espresso
 
 %\subsection{Feature scoring (maybe this is better in the section before though)}
 

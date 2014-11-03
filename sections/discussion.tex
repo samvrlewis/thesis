@@ -97,12 +97,29 @@ To confirm this, a classifier was built and tested on a small amount of data. Th
 \label{classifycorrect}
 \end{figure}
 
+\todo{crop this image a bit and explain what its showing}
+
 This shows that the framework works well when enough data has been annotated. More annotations would be needed to have the same levels of accuracy across the whole data set because the large amounts of variation between individual events. As a proof of concept, the classifier designed using the short time period worked well. 
 
 
 \section{Future Directions}
 
-There are some suggested future directions for this work concerning the annotation interface and classifier design and verification process. 
+There are some suggested future directions for this work concerning the annotation interface and classifier design and verification process.
+
+\subsection{Web Annotation Interface}
+It would be valuable to create a web based version for the annotation interface. Presently, to use the annotation interface, dependencies such as Python, matplotlib and scikit need to be installed first. These packages can be hard to install for a non technical user. Moving to a web based platform would allow for a user on any platform to use annotation interface. 
+
+A web based version would also allow for a streamlined update process as there would only be a single version of the software running centrally, rather than many versions running locally.
+
+The backend framework to build a web annotation interface exists as part of the functions in the \texttt{datatools.py} code, so it would only be a matter of writting a web interface to interface with this backend framework. 
+
+\subsection{Video in Annotation Interface}
+Presently, a user wishing to annotate using video needs to view the video and sensor data separately. If the video was displayed in the interface and synchronised to the displayed sensor data this would simplify the annotation process. 
+
+\subsection{Advanced features}
+More work could be performed in the area of finding features that work well for classification using the time series sensor data. While features that give good performance will vary from application to application there could be more generic features that are included by default 
+
+
 
 
 

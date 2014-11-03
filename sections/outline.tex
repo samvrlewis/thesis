@@ -28,15 +28,20 @@ However, to do this in general, for any animal phenotypic trait measurement prob
 
 The main goal of the thesis is to therefore produce a framework that facilitates the process of rapidly developing a classification algorithm using experimentally recorded data. This is contextualised through the cattle feed efficiency example but, as previously stated, the procedure will be similar for any other phenotype that can be observed through sensor data.
 
-\section{Classifier Development Framework }
+\section{Classifier Development Framework Design}
 
 A block diagram of the framework needed to develop a classifier to classify phenotypic information from time-series sensor data (such as the data from the experiments outlined in section~\ref{sec:prior work}) is shown in figure \ref{frameworkblock}
 
-\missingfigure{Block diagram of whole system}
+\begin{figure}[ht!]
+\begin{center}
+\leavevmode
+\includegraphics[width=0.9\textwidth]{images/frameworkblock.png}
+\end{center}
+\caption[Framework block diagram]{Block diagram of the framework needed to develop phenotypic information classifiers}
+\label{frameworkblock}
+\end{figure}
 
 The purpose for each block of the framework is discussed in the next sections.
-
-\todo{this probably needs to be more general - less about cows}
 
 \subsection{Data Curation/Extraction}
 As outlined in  section~\ref{sec:prior work}, a number of experiments with sensors attached to cattle have been performed. This data will be used to both design a classifier and verify the performance of it. 
@@ -49,11 +54,11 @@ As soon as the data is able to be accessed through via the RESTful interface, th
 
 \subsection{Data Annotation}
 
-Creating training and test sets is important for the design of a automated classifier. These sets consist of sets of input data and correct classifications for that input data. In this case, the sets will consist of chewing/not chewing events with corresponding sensor data. 
+Creating training and test sets is important for the design of a automated classifier. These sets consist of sets of input data and correct classifications for that input data. In this case, the sets will consist of chewing or not chewing events with corresponding sensor data. 
 
 To create the sets, the videos of the cattle will be viewed and events will be found. The recorded audio will also be used to precisely match the event start and end times.  
 
-To assist with this a data annotation interface  will be built. This should take the form of an application that allows sensor data to be loaded in and displayed so that a user can manually annotate sections of the data as a chew/not chew event. Sections of the audio data should also be able to be played from this interface. 
+To assist with this a data annotation interface  will be built. This should take the form of an application that allows sensor data to be loaded in and displayed so that a user can manually annotate sections of the data as a chew or not chew event. Sections of the audio data should also be able to be played from this interface. 
 
 Ideally annotations should be stored in a database like system, along with the sensor data. This would simplify the process of interfacing with the annotations and extracting annotations and corresponding data. 
 
@@ -61,8 +66,21 @@ For a good classifier, it is important to create sets that not only have positiv
 
 \subsection{Classifier Design and Verification} 
 
-Once some of the data in the system has been annotated, a classifier will begin to be designed. Research will be performed to determine the best underlying platform for the classifer to run on. 
+Once some of the data in the system has been annotated, a classifier will begin to be designed. Research will be performed to determine the best underlying platform for the classifier to run on. 
 
 To allow the classifier to be designed using the already annotated data, the classifier should be able to connect directly to the annotation data and sensor data stores. For this reason, rather than develop the classifier directly for the sensor node that it will eventually run on, the classifier will be prototyped in a higher level programming language. This will allow quicker prototyping for the classifier and will be easier to verify.
 
 When the classifier has been designed, its accuracy will need to be verified. This will involve estimating the accuracy of the classifier by using it with the test set that has already been created. Care should be taken not to test the classifier using data that was used to train it. 
+\newpage
+\section{Goals}
+Therefore, the goal of this project is to develop a framework that can be used to develop classifiers for phenotyping using time series sensor data. The framework should contain:
+
+\begin{itemize}
+\item A system for converting collected sensor data into an accessible format.
+
+\item A system to quickly and easily allow the sensor data to be annotated and then store those annotations with the sensor data.
+
+\item A system to use the annotated data to design a classifier. 
+
+\item A system for verifying the performance of a designed classifier.
+\end{itemize}

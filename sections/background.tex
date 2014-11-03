@@ -1,9 +1,9 @@
 \chapter{Background}
 
 \section{Cattle Feed Efficiency}
-To contextualise and drive the development of a framework for the development of phenotypic trait classifiers, the example phenotype of cattle feed effeciency was used. 
+To contextualise and drive the development of a framework for the development of phenotypic trait classifiers, the example phenotype of cattle feed efficiency was used. 
 
-Feed effeciency in cattle is a phenotypic trait that is important for cattle manager. Conversion of feed to red meat in livestock is inherently inefficient in terms of feed intake to weight gain. For beef, current estimates of the ratio of feed intake to weight gain are between 5:1 and 10:1 \cite{Garnett2009}. Opportunities to improve this efficiency through genetic controls such as breed substitution, crossbreeding and genetic selection exist \cite{Hill2012} but data that shows how efficient individual animals are at converting feed to meat is essential in knowing which livestock to breed. This phenotype information can be used to extrapolate information about the genome which allows for the development of selection criteria for breeding objectives \cite{Pollak2012}.  
+Feed efficiency in cattle is a phenotypic trait that is important for cattle manager. Conversion of feed to red meat in livestock is inherently inefficient in terms of feed intake to weight gain. For beef, current estimates of the ratio of feed intake to weight gain are between 5:1 and 10:1 \cite{Garnett2009}. Opportunities to improve this efficiency through genetic controls such as breed substitution, cross-breeding and genetic selection exist \cite{Hill2012} but data that shows how efficient individual animals are at converting feed to meat is essential in knowing which livestock to breed. This phenotype information can be used to extrapolate information about the genome which allows for the development of selection criteria for breeding objectives \cite{Pollak2012}.  
 
 However, this specific livestock phenotype information is difficult to empirically obtain and there is currently a lack of data available. Current recording techniques have focused mainly on animals in feedlots, where the animals are kept in pens and fed \textit{ad libitum} at regulated times \cite{Arthur2005} \cite{Arthur}.
 
@@ -17,7 +17,7 @@ In general, a classification algorithm takes some input and decides the class th
 
 One way to develop such a classification algorithm is a technique called \textit{supervised learning} in which a training set of data needs to be first constructed. This set of data contains example data that has been already classified (usually manually by a human) so that the algorithm can discover patterns and learn the rules needed to classify the data successfully \cite{mohri2012foundations}. This set of data is typically referred to as a \textit{training data set}. 
 
-This learning phase is typically followed by a validation or testing phase \cite{mohri2012foundations}. In order to measure the accuracy of an algorithm it is tested against previously manually classified example data that was not used in the learning phase. This example data is usually refered to as a \textit{test data set}. By testing the algorithm against data that was not used to train the algorithm, the robustness of the algorithm is tested. To further test the robustness of the algorithm there should also be large amounts of diversity between the example data in the test and training data sets.
+This learning phase is typically followed by a validation or testing phase \cite{mohri2012foundations}. In order to measure the accuracy of an algorithm it is tested against previously manually classified example data that was not used in the learning phase. This example data is usually referred to as a \textit{test data set}. By testing the algorithm against data that was not used to train the algorithm, the robustness of the algorithm is tested. To further test the robustness of the algorithm there should also be large amounts of diversity between the example data in the test and training data sets.
 
 This means that the steps to develop a classification algorithm is as follows:
 
@@ -36,7 +36,7 @@ This means that the steps to develop a classification algorithm is as follows:
 This process is somewhat complex so developing a framework that could work with time series data collected from sensor nodes for the purpose of phenotype measurement would be useful. 
 
 \section{Wireless Sensor Networks}
-Wireless Sensor Networks are collections of small computers connected to sensors such as acceloremeter, magnetometer, audio etc. These small computers are named 'sensor nodes' and can perform processing on collected sensor data before communicating, typically over a radio connection, with other sensor nodes in the network.  The sensors nodes are typically low power devices that can run in the field for extended periods of time. \cite{lewis2004wireless}
+Wireless Sensor Networks are collections of small computers connected to sensors such as accelerometer, magnetometer, audio etc. These small computers are named 'sensor nodes' and can perform processing on collected sensor data before communicating, typically over a radio connection, with other sensor nodes in the network.  The sensors nodes are typically low power devices that can run in the field for extended periods of time. \cite{lewis2004wireless}
 
 \subsection{Eartag Platform}
 The Australian Commonwealth Scientific and Industrial Research Organisation (CSIRO) have previously developed sensor nodes that can non intrusively fit onto livestock and collect signal data including inertial measurement, Global Positioning System (GPS) measurement and audio data \cite{Guo2006}. As well as simply collecting signal data, these devices can also perform some processing on the data and send data over radio. There is a potential for these devices to be used for classifying livestock phenotypes such as feed efficiency.
@@ -59,11 +59,11 @@ For cattle, the CSIRO have developed a cattle eartag platform. A photo of the ea
 \end{minipage}
 \end{figure}
 
-The sensor node eartag platform is based on the 16 bit CC430F5137 microcontroller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. 
+The sensor node eartag platform is based on the 16 bit CC430F5137 micro-controller unit and has a range of sensors including audio, GPS, accelerometer, magnetometer and gyroscope. 
 
 The WSN platform has been previously used for animal behaviour classification \cite{Guo2006}. It is ideal for the task of real-time classification as sensor nodes are small, low cost, able to communicate wirelessly and run at low power. The eartag platform is powered by a battery and solar panel so that it is possible to run for extended periods. In addition, the sensors nodes are capable of processing so it would be possible to run a classification algorithm on a node. 
 
-\section{Feed effeciency experiments}
+\section{Feed efficiency experiments}
 \label{feedef}
 Using the eartag platform previously mentioned, CSIRO have performed experiments in a variety of environmental conditions where time-stamped data from sensor nodes attached to cattle is recorded to local storage while the cattle behaviour is recorded with video. In this way, data from the eartag can be matched with particular behaviours of the cattle. A classification algorithm can then be designed using this data.
 
@@ -88,19 +88,19 @@ In developing the framework, there were a number of technologies that were used.
 
 %http://support.sas.com/documentation/cdl/en/wbsvcdg/62759/HTML/default/viewer.htm#n0uxdl0ugxduw6n1gduq1rcbo7i5.htm
 
-Representational state transfer (REST) is a particular architectual style for software systems. The principle of REST is that resources should be avaliable by reference rather than complete copy. This simplifies the process of sharing data. 
+Representational state transfer (REST) is a particular architectural style for software systems. The principle of REST is that resources should be available by reference rather than complete copy. This simplifies the process of sharing data. 
 
-In REST, requests are submitted as URIs. This allows users interracting with resources to not have to know the underlying API for resource interraction. Instead, they could, for example, post a Hypertext Transfer Protocol (HTTP) GET request to retrieve some data. 
+In REST, requests are submitted as URIs. This allows users interacting with resources to not have to know the underlying API for resource interaction. Instead, they could, for example, post a Hypertext Transfer Protocol (HTTP) GET request to retrieve some data. 
 
 Web services that confirm to the REST style are called \textit{RESTful}. RESTful interfaces can return data in any format they choose. A popular choice is the human readable, JavaScript Object Notation (JSON) format. JSON is explored in the next section.
 
-Having data avaliable over a RESTful webservice would be of benefit as it would allow for an API accessible by any programming language that can make HTTP requests.
+Having data available over a RESTful web service would be of benefit as it would allow for an API accessible by any programming language that can make HTTP requests.
 
 \subsection{JSON}
 
 JSON, or JavaScript Object Notation, is a popular data format used for web services. It presents data in a compact, human readable format. JSON is used to represent objects as strings that can be transmitted over HTTP. 
 
-Libaries for JSON exist in most mainstream programming languages and decoding/encoding to or from JSON is fast.
+Libraries for JSON exist in most mainstream programming languages and decoding or encoding to or from JSON is fast.
 
 \subsection{TDF}
 The Tagged Data Format (TDF) is a data format developed by the CSIRO to compactly represent sensor data. It was created for sensor nodes to be able to send data so that any "back end" tools could parse the data without knowledge of the application that created the data. \cite{corke2010environmental}
@@ -108,12 +108,12 @@ The Tagged Data Format (TDF) is a data format developed by the CSIRO to compactl
 Data from the experiments performed by CSIRO was stored in the TDF format on SD storage for ease of use. While TDF works well for storing data it is not as good for data retrieval as it is not indexable. 
 
 \subsection{HDF}
-The Hierarchal Data Format (HDF) is a data format that is commonly used for storing large amounts of data that will be written once, read often but not updated often \cite{hdf2014hierarchical}. Is it commonly used for storing data from scientific experiments. 
+The Hierarchy Data Format (HDF) is a data format that is commonly used for storing large amounts of data that will be written once, read often but not updated often \cite{hdf2014hierarchical}. Is it commonly used for storing data from scientific experiments. 
 
-Importantly, CSIRO have previously developed technologies to allow HDF datastored to be accessed and queried over a JSON RESTful API. Converting sensor data to HDF so it is accessible over this interface would simplify much of the framework. 
+Importantly, CSIRO have previously developed technologies to allow HDF data-stores to be accessed and queried over a JSON RESTful API. Converting sensor data to HDF so it is accessible over this interface would simplify much of the framework. 
 
 \subsection{Python}
-Python is a powerful general use programming language that features high level data structures and object orientated programming. \cite{van2003introduction} It is a mature language that has been used in production environments for a significant amount of time and as such, there are many third party libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. Two such libaries that were critical to the development of the framework are discussed in the proceeding subsections. 
+Python is a powerful general use programming language that features high level data structures and object orientated programming. \cite{van2003introduction} It is a mature language that has been used in production environments for a significant amount of time and as such, there are many third party libraries that can be used with it. In particular, there are many scientific libraries that simplify the process of working with large amounts of data. Two such libraries that were critical to the development of the framework are discussed in the proceeding subsections. 
 
 \subsubsection{matplotlib}
 Matplotlib is a python library used for plotting data. \cite{hunter2007matplotlib} It simplifies the process of plotting and visualising data. It also includes functionality to allow interactive plotting displays to be built. An example matplotlib figure is shown in figure \ref{matplotlib}.
@@ -129,7 +129,7 @@ Matplotlib is a python library used for plotting data. \cite{hunter2007matplotli
 
 \subsubsection{Scikit-learn}
 
-Scikit-learn is a library for Python that implements a large range of machine learning algorithms. The library focuses on providing machine learning capabilities at a high level to non-specialists. \cite{pedregosa2011scikit} As well as providing many machine learning algorithms, Scikit-learn also provides utility functions to simplify the algorithm design/validation process. 
+Scikit-learn is a library for Python that implements a large range of machine learning algorithms. The library focuses on providing machine learning capabilities at a high level to non-specialists. \cite{pedregosa2011scikit} As well as providing many machine learning algorithms, Scikit-learn also provides utility functions to simplify the algorithm design and validation processes. 
 
 Scikit-learn was used for much of the classifier design and verification part of the framework.
 
@@ -137,7 +137,7 @@ Scikit-learn was used for much of the classifier design and verification part of
 
 Machine learning classification algorithms are used to make decisions based on presented data. For supervised algorithms, data of which the result is known (training data) is used to train a model. Once trained, a model can be presented with unseen data and will automatically decide which class the data falls in to. 
 
-Two standard machine learning algorithms that are used for classification problems, the Support Vector Machine (SVM) and the Aritificial Neural Network (ANN) are discussed in more detail below. 
+Two standard machine learning algorithms that are used for classification problems, the Support Vector Machine (SVM) and the Artificial Neural Network (ANN) are discussed in more detail below. 
 
 \subsection{Artificial Neural Networks}
 \label{ANNAppendix}

@@ -86,35 +86,35 @@
 
 % This constructs the standard UQ title page
 \def\titlep{%
-    \thispagestyle{empty}%
-    \null\vskip1in%
+\thispagestyle{empty}%
+\begin{center}
+    \includegraphics[scale=0.25]{images/UQlogo.pdf}\\
+    \large\sc\expandafter{The University Of Queensland}
+    \vskip2.0cm
+    \ifthenelse{\boolean{titlesmallcaps}}
+        {\huge\sc\expandafter{\@title}} % put in small caps
+        {\Large\uppercase\expandafter{\@title}} % use standard title
+\end{center}
+\vfill
+\begin{center}
+    \textrm{By}\\
+    \vskip0.5cm
+    \textrm{\@author}\\
+\end{center}
+\vskip2.0cm
+\begin{center}
+    \textsc{Submitted to the department of \expandafter{\@department} \\
+    \degreetext{}\\
+    \@submitdate\\}
+\end{center}
+\ifthenelse{\boolean{examinerscopy}}{%
     \begin{center}
-        \ifthenelse{\boolean{titlesmallcaps}}
-            {\huge\sc\expandafter{\@title}} % put in small caps
-            {\Large\uppercase\expandafter{\@title}} % use standard title
-    \end{center}
-    \vfill
-    \begin{center}
-        \textrm{By}\\
-        \vskip.5in
-        \textrm{\@author}\\
-    \end{center}
-    \vskip1in
-    \begin{center}
-        \textsc{A thesis submitted to the University of Queensland\\
-        \degreetext{}
-        \vskip.2in
-        Department of \expandafter{\@department}\\
-        \@submitdate\\}
-    \end{center}
-    \ifthenelse{\boolean{examinerscopy}}{%
-        \begin{center}
-            \vskip1in
-            {\LARGE \textsc{Examiner's Copy}}
-        \end{center}%
-        }{}
-    \vfill
-    \vskip.5in\newpage}
+        \vskip1in
+        %{\LARGE \textsc{Examiner's Copy}}
+    \end{center}%
+    }{}
+\vfill
+\vskip.5in\newpage}
 
 % this defines the signature for the signature page where the standard
 % UQ declaration is put
